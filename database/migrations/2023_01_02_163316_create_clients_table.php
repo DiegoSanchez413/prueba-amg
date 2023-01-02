@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateClientsTable extends Migration
@@ -27,8 +28,6 @@ class CreateClientsTable extends Migration
         $addClient = "CREATE PROCEDURE addClient(IN name VARCHAR(255), IN lastname VARCHAR(255), IN dob DATE, IN phone VARCHAR(255), IN email VARCHAR(255), IN address VARCHAR(255)) BEGIN INSERT INTO clients (name, lastname, dob, phone, email, address) VALUES (name, lastname, dob, phone, email, address); END";
         DB::unprepared($addClient);
 
-        // $listClient = "CREATE PROCEDURE listClient() BEGIN SELECT clients.id, clients.name, clients.lastname, clients.dob, clients.phone, clients.email, clients.address, SUM(payments.amount) AS total_payments, (SELECT SUM(amount) FROM payments) - SUM(payments.amount) AS total_due FROM clients LEFT JOIN payments ON clients.id = payments.client_id GROUP BY clients.id; END";
-
         $listClient = "CREATE PROCEDURE listClient() BEGIN SELECT clients.id, CONCAT(clients.name, ' ', clients.lastname) AS fullname, clients.dob, clients.phone, clients.email, clients.address, SUM(payments.amount) AS total, (SELECT COUNT(amount) FROM payments) AS payments FROM clients LEFT JOIN payments ON clients.id = payments.client_id GROUP BY clients.id; END";
         DB::unprepared($listClient);
 
@@ -48,9 +47,5 @@ class CreateClientsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('clients');
-        $deleteAddClient = "DROP PROCEDURE IF EXISTS addClient";
-        $deletelistClient = "DROP PROCEDURE IF EXISTS listClient";
-        $deleteupdateClient = "DROP PROCEDURE IF EXISTS updateClient";
-        $deleteremoveClient = "DROP PROCEDURE IF EXISTS removeClient";
     }
 }

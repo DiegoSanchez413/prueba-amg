@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::post('/addClient', 'App\Http\Controllers\ClientController@store');
 Route::get('/listClients', 'App\Http\Controllers\ClientController@list');
+Route::post('/addPayment', 'App\Http\Controllers\PaymentController@store');
