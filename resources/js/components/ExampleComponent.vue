@@ -12,6 +12,16 @@
             </v-snackbar>
 
             <v-data-table :headers="headers" :items="items" :items-per-page="5" class="elevation-1">
+                <template v-slot:item.name="{ item }">
+                    <span>{{ item.name }} {{ item.lastname }}</span>
+                </template>
+
+                <template v-slot:item.total="{ item }">
+                    <span>$ {{ item.total }} </span>
+                </template>
+
+
+
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Clients</v-toolbar-title>
@@ -27,7 +37,7 @@
 
                             <v-card>
                                 <v-card-title class="text-h5 grey lighten-2">
-                                    Add Client
+                                    {{ title }}
                                 </v-card-title>
 
                                 <v-card-text>
@@ -85,8 +95,13 @@
                                                         </v-col>
 
                                                         <v-btn :disabled="!valid" color="green" class="mr-4"
-                                                            @click="validate">
+                                                            v-if="title !== 'Edit Client'" @click="validate">
                                                             Save
+                                                        </v-btn>
+
+                                                        <v-btn :disabled="!valid" color="green" class="mr-4"
+                                                            v-else @click="updateClient">
+                                                            Update
                                                         </v-btn>
                                                     </v-row>
                                                 </v-container>
@@ -186,7 +201,17 @@
                                 </v-card-text>
                             </v-card>
                         </v-dialog>
+
                     </v-toolbar>
+                </template>
+
+                <template v-slot:item.actions="{ item }">
+                    <v-icon small class="mr-2" @click="editItem(item)">
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon small @click="deleteItem(item)">
+                        mdi-delete
+                    </v-icon>
                 </template>
             </v-data-table>
         </v-app>
@@ -201,6 +226,7 @@
 export default {
     data() {
         return {
+            title: 'Add Client',
             vertical: false,
             dialogPayment: false,
             items: [],
@@ -253,9 +279,9 @@ export default {
                     text: 'Client Name',
                     align: 'start',
                     sortable: false,
-                    value: 'fullname',
+                    value: 'name',
                 },
-                { text: 'DOB', value: 'dob' },
+                { text: 'DOB', value: 'dob', formatter: this.formatDate },
                 { text: 'Phone', value: 'phone' },
                 { text: 'Email', value: 'email' },
                 { text: 'Address', value: 'address' },
@@ -272,8 +298,24 @@ export default {
 
 
     methods: {
+        editItem(item) {
+            this.title = 'Edit Client';
+            this.form = Object.assign({}, item);
+            this.dialog = true;
+
+        },
+        deleteItem(item) {
+
+        },
         formatCurrency(value) {
-            return `$ ${value}`;
+            return "$ " + (value / 100).toFixed(2);
+        },
+        formatDate(date) {
+            const d = new Date(date)
+            const day = d.getDate()
+            const monthIndex = d.getMonth()
+            const year = d.getFullYear()
+            return `${day}/${monthIndex}/${year}`
         },
         addAnother: function () {
             const valid = this.$refs.formPayment.validate()
@@ -319,6 +361,22 @@ export default {
             const { status } = await this.$axios.post('/addClient', this.form);
             if (status === 200) {
                 this.listClients();
+            }
+        },
+
+        updateClient: async function () {
+            // verify if id is present
+            console.log(this.form);
+            const { status } = await this.$axios.put('/updateClient', this.form);
+            if (status === 200) {
+                this.listClients();
+                this.dialog = false;
+                this.text = 'Client Updated Successfully';
+                this.snackbar = true;
+                this.$refs.form.reset()
+                setTimeout(() => {
+                    this.snackbar = false
+                }, 2000)
             }
         },
         addPayment: async function () {

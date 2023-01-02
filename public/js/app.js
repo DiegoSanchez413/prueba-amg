@@ -5320,6 +5320,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      title: 'Add Client',
       vertical: false,
       dialogPayment: false,
       items: [],
@@ -5371,10 +5372,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         text: 'Client Name',
         align: 'start',
         sortable: false,
-        value: 'fullname'
+        value: 'name'
       }, {
         text: 'DOB',
-        value: 'dob'
+        value: 'dob',
+        formatter: this.formatDate
       }, {
         text: 'Phone',
         value: 'phone'
@@ -5402,8 +5404,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.listClients();
   },
   methods: {
+    editItem: function editItem(item) {
+      this.title = 'Edit Client';
+      this.form = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {},
     formatCurrency: function formatCurrency(value) {
-      return "$ ".concat(value);
+      return "$ " + (value / 100).toFixed(2);
+    },
+    formatDate: function formatDate(date) {
+      var d = new Date(date);
+      var day = d.getDate();
+      var monthIndex = d.getMonth();
+      var year = d.getFullYear();
+      return "".concat(day, "/").concat(monthIndex, "/").concat(year);
     },
     addAnother: function addAnother() {
       var valid = this.$refs.formPayment.validate();
@@ -5509,17 +5524,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       return addClient;
     }(),
-    addPayment: function () {
-      var _addPayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+    updateClient: function () {
+      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var _this3 = this;
-        var _yield$this$$axios$po3, status;
+        var _yield$this$$axios$pu, status;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              _context4.next = 2;
+              // verify if id is present
+              console.log(this.form);
+              _context4.next = 3;
+              return this.$axios.put('/updateClient', this.form);
+            case 3:
+              _yield$this$$axios$pu = _context4.sent;
+              status = _yield$this$$axios$pu.status;
+              if (status === 200) {
+                this.listClients();
+                this.dialog = false;
+                this.text = 'Client Updated Successfully';
+                this.snackbar = true;
+                this.$refs.form.reset();
+                setTimeout(function () {
+                  _this3.snackbar = false;
+                }, 2000);
+              }
+            case 6:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4, this);
+      }));
+      function updateClient() {
+        return _updateClient.apply(this, arguments);
+      }
+      return updateClient;
+    }(),
+    addPayment: function () {
+      var _addPayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var _this4 = this;
+        var _yield$this$$axios$po3, status;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
               return this.$axios.post('/addPayment', this.formPayment);
             case 2:
-              _yield$this$$axios$po3 = _context4.sent;
+              _yield$this$$axios$po3 = _context5.sent;
               status = _yield$this$$axios$po3.status;
               if (status === 200) {
                 this.listClients();
@@ -5528,14 +5578,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.snackbar = true;
                 this.$refs.formPayment.reset();
                 setTimeout(function () {
-                  _this3.snackbar = false;
+                  _this4.snackbar = false;
                 }, 2000);
               }
             case 5:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
       function addPayment() {
         return _addPayment.apply(this, arguments);
@@ -5602,6 +5652,18 @@ var render = function render() {
       "items-per-page": 5
     },
     scopedSlots: _vm._u([{
+      key: "item.name",
+      fn: function fn(_ref2) {
+        var item = _ref2.item;
+        return [_c("span", [_vm._v(_vm._s(item.name) + " " + _vm._s(item.lastname))])];
+      }
+    }, {
+      key: "item.total",
+      fn: function fn(_ref3) {
+        var item = _ref3.item;
+        return [_c("span", [_vm._v("$ " + _vm._s(item.total) + " ")])];
+      }
+    }, {
       key: "top",
       fn: function fn() {
         return [_c("v-toolbar", {
@@ -5617,9 +5679,9 @@ var render = function render() {
         }), _vm._v(" "), _c("v-spacer"), _vm._v(" "), _c("v-dialog", {
           scopedSlots: _vm._u([{
             key: "activator",
-            fn: function fn(_ref2) {
-              var on = _ref2.on,
-                attrs = _ref2.attrs;
+            fn: function fn(_ref4) {
+              var on = _ref4.on,
+                attrs = _ref4.attrs;
               return [_c("v-btn", _vm._g(_vm._b({
                 attrs: {
                   color: "success",
@@ -5637,7 +5699,7 @@ var render = function render() {
           }
         }, [_vm._v(" "), _c("v-card", [_c("v-card-title", {
           staticClass: "text-h5 grey lighten-2"
-        }, [_vm._v("\n                                Add Client\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", [_c("h2", {
+        }, [_vm._v("\n                                " + _vm._s(_vm.title) + "\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", [_c("h2", {
           staticClass: "text-left"
         }, [_vm._v("Personal Information")]), _vm._v(" "), [_c("v-form", {
           ref: "form",
@@ -5712,9 +5774,9 @@ var render = function render() {
           },
           scopedSlots: _vm._u([{
             key: "activator",
-            fn: function fn(_ref3) {
-              var on = _ref3.on,
-                attrs = _ref3.attrs;
+            fn: function fn(_ref5) {
+              var on = _ref5.on,
+                attrs = _ref5.attrs;
               return [_c("v-text-field", _vm._g(_vm._b({
                 attrs: {
                   label: "DOB",
@@ -5825,7 +5887,7 @@ var render = function render() {
             },
             expression: "form.address"
           }
-        })], 1), _vm._v(" "), _c("v-btn", {
+        })], 1), _vm._v(" "), _vm.title !== "Edit Client" ? _c("v-btn", {
           staticClass: "mr-4",
           attrs: {
             disabled: !_vm.valid,
@@ -5834,12 +5896,21 @@ var render = function render() {
           on: {
             click: _vm.validate
           }
-        }, [_vm._v("\n                                                        Save\n                                                    ")])], 1)], 1)], 1)]], 2)], 1)], 1)], 1), _vm._v(" "), _c("v-dialog", {
+        }, [_vm._v("\n                                                        Save\n                                                    ")]) : _c("v-btn", {
+          staticClass: "mr-4",
+          attrs: {
+            disabled: !_vm.valid,
+            color: "green"
+          },
+          on: {
+            click: _vm.updateClient
+          }
+        }, [_vm._v("\n                                                        Update\n                                                    ")])], 1)], 1)], 1)]], 2)], 1)], 1)], 1), _vm._v(" "), _c("v-dialog", {
           scopedSlots: _vm._u([{
             key: "activator",
-            fn: function fn(_ref4) {
-              var on = _ref4.on,
-                attrs = _ref4.attrs;
+            fn: function fn(_ref6) {
+              var on = _ref6.on,
+                attrs = _ref6.attrs;
               return [_c("v-btn", _vm._g(_vm._b({
                 attrs: {
                   color: "success",
@@ -5973,9 +6044,9 @@ var render = function render() {
           },
           scopedSlots: _vm._u([{
             key: "activator",
-            fn: function fn(_ref5) {
-              var on = _ref5.on,
-                attrs = _ref5.attrs;
+            fn: function fn(_ref7) {
+              var on = _ref7.on,
+                attrs = _ref7.attrs;
               return [_c("v-text-field", _vm._g(_vm._b({
                 attrs: {
                   label: "Date",
@@ -6044,6 +6115,31 @@ var render = function render() {
         }, [_vm._v("\n                                                        Save\n                                                    ")])], 1)], 1)], 1)]], 2)], 1)], 1)], 1)], 1)];
       },
       proxy: true
+    }, {
+      key: "item.actions",
+      fn: function fn(_ref8) {
+        var item = _ref8.item;
+        return [_c("v-icon", {
+          staticClass: "mr-2",
+          attrs: {
+            small: ""
+          },
+          on: {
+            click: function click($event) {
+              return _vm.editItem(item);
+            }
+          }
+        }, [_vm._v("\n                    mdi-pencil\n                ")]), _vm._v(" "), _c("v-icon", {
+          attrs: {
+            small: ""
+          },
+          on: {
+            click: function click($event) {
+              return _vm.deleteItem(item);
+            }
+          }
+        }, [_vm._v("\n                    mdi-delete\n                ")])];
+      }
     }])
   })], 1)], 1);
 };

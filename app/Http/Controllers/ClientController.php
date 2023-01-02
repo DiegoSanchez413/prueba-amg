@@ -23,4 +23,18 @@ class ClientController extends Controller
         $result = DB::select('call addClient(?, ?, ?, ?, ?, ?)', $array);
         return response()->json($result);
     }
+
+    public function update(Request $request)
+    {
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $lastname = $request->input('lastname');
+        $dob = $request->input('dob');
+        $phone = $request->input('phone');
+        $email = $request->input('email');
+        $address = $request->input('address');
+        $array = array($id, $name, $lastname, $dob, $phone, $email, $address);
+        $result = DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?)', $array);
+        return response()->json($result);
+    }
 }
