@@ -5363,6 +5363,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       validPayment: true,
       form: {},
       formPayment: {},
+      payments: [{
+        transaction_id: "",
+        amount: "",
+        date: "",
+        menu: false
+      }],
       payment: {},
       editedItem: {},
       menu: false,
@@ -5403,7 +5409,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     this.listClients();
   },
+  watch: {},
   methods: {
+    showDialog: function showDialog() {
+      this.dialog = true;
+      this.title = 'Add Client';
+      this.form = {
+        name: "",
+        lastname: "",
+        dob: "",
+        phone: "",
+        email: "",
+        address: ""
+      };
+    },
+    addMore: function addMore() {
+      if (this.payments.length < 5) {
+        this.payments.push({
+          transaction_id: "",
+          amount: "",
+          date: "",
+          menu: false
+        });
+      }
+    },
     editItem: function editItem(item) {
       this.title = 'Edit Client';
       this.form = Object.assign({}, item);
@@ -5420,33 +5449,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var year = d.getFullYear();
       return "".concat(day, "/").concat(monthIndex, "/").concat(year);
     },
-    addAnother: function addAnother() {
-      var valid = this.$refs.formPayment.validate();
-      if (valid) {
-        this.listOfPayments.push(Object.assign({}, this.formPayment));
-        console.log(this.listOfPayments);
-        this.$refs.formPayment.reset();
-      } else {
-        alert('Please fill all the fields');
-      }
-    },
     validate: function validate() {
-      var _this = this;
-      var valid = this.$refs.form.validate();
-      if (valid) {
+      var clientValid = this.$refs.form.validate();
+      if (clientValid) {
         this.addClient();
-        this.dialog = false;
-        this.text = 'Client Added Successfully';
-        this.snackbar = true;
-        this.$refs.form.reset();
-        setTimeout(function () {
-          _this.snackbar = false;
-        }, 2000);
       }
+
+      // if (valid) {
+      //     this.addClient();
+      //     this.dialog = false;
+      //     this.text = 'Client Added Successfully';
+      //     this.snackbar = true;
+      //     this.$refs.form.reset()
+      //     setTimeout(() => {
+      //         this.snackbar = false
+      //     }, 2000)
+      // }
     },
+
     validatePayment: function () {
       var _validatePayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var _this2 = this;
+        var _this = this;
         var _yield$this$$axios$po, status;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
@@ -5463,7 +5486,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.snackbar = true;
                 this.$refs.formPayment.reset();
                 setTimeout(function () {
-                  _this2.snackbar = false;
+                  _this.snackbar = false;
                 }, 2000);
               }
             case 5:
@@ -5501,19 +5524,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     addClient: function () {
       var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _yield$this$$axios$po2, status;
+        var _this2 = this;
+        var form, _yield$this$$axios$po2, data, status;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
-              return this.$axios.post('/addClient', this.form);
-            case 2:
+              form = {
+                client: this.form,
+                payments: this.payments
+              };
+              _context3.next = 3;
+              return this.$axios.post('/addClient', form);
+            case 3:
               _yield$this$$axios$po2 = _context3.sent;
+              data = _yield$this$$axios$po2.data;
               status = _yield$this$$axios$po2.status;
-              if (status === 200) {
+              if (status === 200 && data[0].success) {
                 this.listClients();
+                this.dialog = false;
+                this.text = 'Client and Payments registered successfully';
+                this.snackbar = true;
+                this.$refs.form.reset();
+                setTimeout(function () {
+                  _this2.snackbar = false;
+                }, 2000);
               }
-            case 5:
+            case 7:
             case "end":
               return _context3.stop();
           }
@@ -5644,7 +5680,7 @@ var render = function render() {
       },
       expression: "snackbar"
     }
-  }, [_vm._v("\n            " + _vm._s(_vm.text) + "\n\n            ")]), _vm._v(" "), _c("v-data-table", {
+  }, [_vm._v("\n            " + _vm._s(_vm.text) + "\n            ")]), _vm._v(" "), _c("v-data-table", {
     staticClass: "elevation-1",
     attrs: {
       headers: _vm.headers,
@@ -5660,8 +5696,9 @@ var render = function render() {
     }, {
       key: "item.total",
       fn: function fn(_ref3) {
+        var _item$total;
         var item = _ref3.item;
-        return [_c("span", [_vm._v("$ " + _vm._s(item.total) + " ")])];
+        return [_c("span", [_vm._v("$ " + _vm._s((_item$total = item.total) !== null && _item$total !== void 0 ? _item$total : 0) + " ")])];
       }
     }, {
       key: "top",
@@ -5686,6 +5723,9 @@ var render = function render() {
                 attrs: {
                   color: "success",
                   dark: ""
+                },
+                on: {
+                  click: _vm.showDialog
                 }
               }, "v-btn", attrs, false), on), [_vm._v("\n                                ADD CLIENT\n                            ")])];
             }
@@ -5701,7 +5741,7 @@ var render = function render() {
           staticClass: "text-h5 grey lighten-2"
         }, [_vm._v("\n                                " + _vm._s(_vm.title) + "\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", [_c("h2", {
           staticClass: "text-left"
-        }, [_vm._v("Personal Information")]), _vm._v(" "), [_c("v-form", {
+        }, [_vm._v("Personal Information")]), _vm._v(" "), _c("v-form", {
           ref: "form",
           attrs: {
             "lazy-validation": ""
@@ -5780,6 +5820,7 @@ var render = function render() {
               return [_c("v-text-field", _vm._g(_vm._b({
                 attrs: {
                   label: "DOB",
+                  type: "date",
                   rules: _vm.dobRules,
                   "prepend-icon": "mdi-calendar",
                   readonly: ""
@@ -5823,7 +5864,7 @@ var render = function render() {
               _vm.menu = false;
             }
           }
-        }, [_vm._v("\n                                                                    Cancel\n                                                                ")]), _vm._v(" "), _c("v-btn", {
+        }, [_vm._v("\n                                                                Cancel\n                                                            ")]), _vm._v(" "), _c("v-btn", {
           attrs: {
             text: "",
             color: "primary"
@@ -5833,7 +5874,7 @@ var render = function render() {
               return _vm.$refs.menu.save(_vm.form.dob);
             }
           }
-        }, [_vm._v("\n                                                                    OK\n                                                                ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
+        }, [_vm._v("\n                                                                OK\n                                                            ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
           attrs: {
             cols: "12",
             sm: "6",
@@ -5887,7 +5928,177 @@ var render = function render() {
             },
             expression: "form.address"
           }
-        })], 1), _vm._v(" "), _vm.title !== "Edit Client" ? _c("v-btn", {
+        })], 1), _vm._v(" "), _c("v-col", {
+          attrs: {
+            cols: "6",
+            sm: "6",
+            md: "6"
+          }
+        }, [_c("h2", {
+          staticClass: "text-left"
+        }, [_vm._v("PAYMENTS")])]), _vm._v(" "), _c("v-col", {
+          attrs: {
+            cols: "6",
+            sm: "6",
+            md: "6"
+          }
+        }, [_c("v-btn", {
+          staticClass: "mx-2",
+          attrs: {
+            fab: "",
+            dark: "",
+            color: "primary"
+          },
+          on: {
+            click: function click($event) {
+              return _vm.addMore();
+            }
+          }
+        }, [_c("v-icon", {
+          attrs: {
+            dark: ""
+          }
+        }, [_vm._v("\n                                                            mdi-plus\n                                                        ")])], 1)], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
+          return _c("v-col", {
+            key: index,
+            attrs: {
+              cols: "12",
+              sm: "12",
+              md: "12"
+            }
+          }, [_c("v-row", [_c("v-col", {
+            attrs: {
+              cols: "12",
+              sm: "6",
+              md: "4"
+            }
+          }, [_c("v-text-field", {
+            attrs: {
+              label: "Transaction ID",
+              type: "number",
+              rules: _vm.transactionIdRules
+            },
+            model: {
+              value: _vm.payments[index].transaction_id,
+              callback: function callback($$v) {
+                _vm.$set(_vm.payments[index], "transaction_id", $$v);
+              },
+              expression: "payments[index].transaction_id"
+            }
+          })], 1), _vm._v(" "), _c("v-col", {
+            attrs: {
+              cols: "12",
+              sm: "6",
+              md: "4"
+            }
+          }, [_c("v-text-field", {
+            attrs: {
+              label: "Amount",
+              type: "number",
+              prefix: "$",
+              rules: _vm.amountRules
+            },
+            model: {
+              value: payment.amount,
+              callback: function callback($$v) {
+                _vm.$set(payment, "amount", $$v);
+              },
+              expression: "payment.amount"
+            }
+          })], 1), _vm._v(" "), _c("v-col", {
+            attrs: {
+              cols: "12",
+              sm: "6",
+              md: "4"
+            }
+          }, [_c("v-menu", {
+            ref: "payment",
+            refInFor: true,
+            attrs: {
+              "close-on-content-click": false,
+              "return-value": payment.date,
+              transition: "scale-transition",
+              "offset-y": "",
+              "min-width": "auto"
+            },
+            on: {
+              "update:returnValue": function updateReturnValue($event) {
+                return _vm.$set(payment, "date", $event);
+              },
+              "update:return-value": function updateReturnValue($event) {
+                return _vm.$set(payment, "date", $event);
+              }
+            },
+            scopedSlots: _vm._u([{
+              key: "activator",
+              fn: function fn(_ref6) {
+                var on = _ref6.on,
+                  attrs = _ref6.attrs;
+                return [_c("v-text-field", _vm._g(_vm._b({
+                  attrs: {
+                    type: "date",
+                    label: "Date",
+                    rules: _vm.dateRules,
+                    "prepend-icon": "mdi-calendar",
+                    readonly: ""
+                  },
+                  model: {
+                    value: payment.date,
+                    callback: function callback($$v) {
+                      _vm.$set(payment, "date", $$v);
+                    },
+                    expression: "payment.date"
+                  }
+                }, "v-text-field", attrs, false), on))];
+              }
+            }], null, true),
+            model: {
+              value: payment.menu,
+              callback: function callback($$v) {
+                _vm.$set(payment, "menu", $$v);
+              },
+              expression: "payment.menu"
+            }
+          }, [_vm._v(" "), _c("v-date-picker", {
+            attrs: {
+              "no-title": "",
+              scrollable: ""
+            },
+            model: {
+              value: payment.date,
+              callback: function callback($$v) {
+                _vm.$set(payment, "date", $$v);
+              },
+              expression: "payment.date"
+            }
+          }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
+            attrs: {
+              text: "",
+              color: "primary"
+            },
+            on: {
+              click: function click($event) {
+                payment.menu = false;
+              }
+            }
+          }, [_vm._v("\n                                                                        Cancel\n                                                                    ")]), _vm._v(" "), _c("v-btn", {
+            attrs: {
+              text: "",
+              color: "primary"
+            },
+            on: {
+              click: function click($event) {
+                return _vm.$refs.payment[index].save(payment.date);
+              }
+            }
+          }, [_vm._v("\n                                                                        OK\n                                                                    ")])], 1)], 1)], 1)], 1)], 1);
+        }), _vm._v(" "), _c("v-col", {
+          attrs: {
+            cols: "12",
+            sm: "12",
+            md: "12"
+          }
+        }, [_vm.title !== "Edit Client" ? _c("v-btn", {
           staticClass: "mr-4",
           attrs: {
             disabled: !_vm.valid,
@@ -5905,220 +6116,13 @@ var render = function render() {
           on: {
             click: _vm.updateClient
           }
-        }, [_vm._v("\n                                                        Update\n                                                    ")])], 1)], 1)], 1)]], 2)], 1)], 1)], 1), _vm._v(" "), _c("v-dialog", {
-          scopedSlots: _vm._u([{
-            key: "activator",
-            fn: function fn(_ref6) {
-              var on = _ref6.on,
-                attrs = _ref6.attrs;
-              return [_c("v-btn", _vm._g(_vm._b({
-                attrs: {
-                  color: "success",
-                  dark: ""
-                }
-              }, "v-btn", attrs, false), on), [_vm._v("\n                                ADD PAYMENT\n                            ")])];
-            }
-          }]),
-          model: {
-            value: _vm.dialogPayment,
-            callback: function callback($$v) {
-              _vm.dialogPayment = $$v;
-            },
-            expression: "dialogPayment"
-          }
-        }, [_vm._v(" "), _c("v-card", [_c("v-card-title", {
-          staticClass: "text-h5 grey lighten-2"
-        }, [_vm._v("\n                                Add Payment\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", [_c("v-container", [_c("v-row", [_c("v-col", {
-          attrs: {
-            cols: "6",
-            sm: "6",
-            md: "6"
-          }
-        }, [_c("h2", {
-          staticClass: "text-left"
-        }, [_vm._v("Payments")])]), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "6",
-            sm: "6",
-            md: "6"
-          }
-        }, [_c("v-btn", {
-          attrs: {
-            icon: ""
-          },
-          on: {
-            click: _vm.addAnother
-          }
-        }, [_c("v-icon", [_vm._v("mdi-plus")])], 1)], 1)], 1)], 1), _vm._v(" "), [_c("v-form", {
-          ref: "formPayment",
-          attrs: {
-            "lazy-validation": ""
-          },
-          model: {
-            value: _vm.validPayment,
-            callback: function callback($$v) {
-              _vm.validPayment = $$v;
-            },
-            expression: "validPayment"
-          }
-        }, [_c("v-container", [_c("v-row", [_c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "3"
-          }
-        }, [_c("v-select", {
-          attrs: {
-            items: _vm.items,
-            label: "Clients",
-            "item-value": "id",
-            "item-text": "fullname",
-            rules: _vm.clientIdRules
-          },
-          model: {
-            value: _vm.formPayment.clientId,
-            callback: function callback($$v) {
-              _vm.$set(_vm.formPayment, "clientId", $$v);
-            },
-            expression: "formPayment.clientId"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "3"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Transaction ID",
-            rules: _vm.transactionIdRules
-          },
-          model: {
-            value: _vm.formPayment.transaction_id,
-            callback: function callback($$v) {
-              _vm.$set(_vm.formPayment, "transaction_id", $$v);
-            },
-            expression: "formPayment.transaction_id"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "3"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Amount",
-            prefix: "$",
-            rules: _vm.amountRules
-          },
-          model: {
-            value: _vm.formPayment.amount,
-            callback: function callback($$v) {
-              _vm.$set(_vm.formPayment, "amount", $$v);
-            },
-            expression: "formPayment.amount"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "3"
-          }
-        }, [_c("v-menu", {
-          ref: "menuPayment",
-          attrs: {
-            "close-on-content-click": false,
-            "return-value": _vm.formPayment.date,
-            transition: "scale-transition",
-            "offset-y": "",
-            "min-width": "auto"
-          },
-          on: {
-            "update:returnValue": function updateReturnValue($event) {
-              return _vm.$set(_vm.formPayment, "date", $event);
-            },
-            "update:return-value": function updateReturnValue($event) {
-              return _vm.$set(_vm.formPayment, "date", $event);
-            }
-          },
-          scopedSlots: _vm._u([{
-            key: "activator",
-            fn: function fn(_ref7) {
-              var on = _ref7.on,
-                attrs = _ref7.attrs;
-              return [_c("v-text-field", _vm._g(_vm._b({
-                attrs: {
-                  label: "Date",
-                  rules: _vm.dateRules,
-                  "prepend-icon": "mdi-calendar",
-                  readonly: ""
-                },
-                model: {
-                  value: _vm.formPayment.date,
-                  callback: function callback($$v) {
-                    _vm.$set(_vm.formPayment, "date", $$v);
-                  },
-                  expression: "formPayment.date"
-                }
-              }, "v-text-field", attrs, false), on))];
-            }
-          }]),
-          model: {
-            value: _vm.menuPayment,
-            callback: function callback($$v) {
-              _vm.menuPayment = $$v;
-            },
-            expression: "menuPayment"
-          }
-        }, [_vm._v(" "), _c("v-date-picker", {
-          attrs: {
-            "no-title": "",
-            scrollable: ""
-          },
-          model: {
-            value: _vm.formPayment.date,
-            callback: function callback($$v) {
-              _vm.$set(_vm.formPayment, "date", $$v);
-            },
-            expression: "formPayment.date"
-          }
-        }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
-          attrs: {
-            text: "",
-            color: "primary"
-          },
-          on: {
-            click: function click($event) {
-              _vm.menuPayment = false;
-            }
-          }
-        }, [_vm._v("\n                                                                    Cancel\n                                                                ")]), _vm._v(" "), _c("v-btn", {
-          attrs: {
-            text: "",
-            color: "primary"
-          },
-          on: {
-            click: function click($event) {
-              return _vm.$refs.menuPayment.save(_vm.formPayment.date);
-            }
-          }
-        }, [_vm._v("\n                                                                    OK\n                                                                ")])], 1)], 1)], 1), _vm._v(" "), _c("v-btn", {
-          staticClass: "mr-4",
-          attrs: {
-            disabled: !_vm.validPayment,
-            color: "green"
-          },
-          on: {
-            click: _vm.validatePayment
-          }
-        }, [_vm._v("\n                                                        Save\n                                                    ")])], 1)], 1)], 1)]], 2)], 1)], 1)], 1)], 1)];
+        }, [_vm._v("\n                                                        Update\n                                                    ")])], 1)], 2)], 1)], 1)], 1)], 1)], 1)], 1)], 1)];
       },
       proxy: true
     }, {
       key: "item.actions",
-      fn: function fn(_ref8) {
-        var item = _ref8.item;
+      fn: function fn(_ref7) {
+        var item = _ref7.item;
         return [_c("v-icon", {
           staticClass: "mr-2",
           attrs: {

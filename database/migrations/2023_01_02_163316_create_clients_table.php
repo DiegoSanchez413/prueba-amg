@@ -25,7 +25,7 @@ class CreateClientsTable extends Migration
             $table->timestamps();
         });
 
-        $addClient = "CREATE PROCEDURE addClient(IN name VARCHAR(255), IN lastname VARCHAR(255), IN dob DATE, IN phone VARCHAR(255), IN email VARCHAR(255), IN address VARCHAR(255)) BEGIN INSERT INTO clients (name, lastname, dob, phone, email, address) VALUES (name, lastname, dob, phone, email, address); END";
+        $addClient = "CREATE PROCEDURE addClient(IN name VARCHAR(255), IN lastname VARCHAR(255), IN dob DATE, IN phone VARCHAR(255), IN email VARCHAR(255), IN address VARCHAR(255)) BEGIN INSERT INTO clients (name, lastname, dob, phone, email, address) VALUES (name, lastname, dob, phone, email, address); SELECT id, true AS success FROM clients WHERE id = LAST_INSERT_ID(); END";
         DB::unprepared($addClient);
 
         $listClient = "CREATE PROCEDURE listClient() BEGIN SELECT clients.id, CONCAT(clients.name, ' ', clients.lastname) AS fullname, clients.dob, clients.phone, clients.email, clients.address, SUM(payments.amount) AS total, (SELECT COUNT(amount) FROM payments) AS payments FROM clients LEFT JOIN payments ON clients.id = payments.client_id GROUP BY clients.id; END";
