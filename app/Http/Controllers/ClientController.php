@@ -40,15 +40,9 @@ class ClientController extends Controller
 
     public function update(Request $request)
     {
-        $id = $request->input('id');
-        $name = $request->input('name');
-        $lastname = $request->input('lastname');
-        $dob = $request->input('dob');
-        $phone = $request->input('phone');
-        $email = $request->input('email');
-        $address = $request->input('address');
-        $array = array($id, $name, $lastname, $dob, $phone, $email, $address);
+        $client = $request->input('client');
+        $array = array($client['id'], $client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address']);
         $result = DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?)', $array);
-        return response()->json($result);
+        return response()->json($result, 200);
     }
 }

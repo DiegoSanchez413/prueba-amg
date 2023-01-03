@@ -74,7 +74,7 @@
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                             v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="payment.date" no-title scrollable>
+                                    <v-date-picker v-model="payment.date" no-title scrollable >
 
                                         <v-spacer></v-spacer>
                                         <v-btn text color="primary" @click="payment.menu = false">
@@ -105,6 +105,8 @@
     </v-container>
 </template>
 <script>
+import { listClients } from '../api/client.js';
+
 export default {
     props: {
         title: {
@@ -133,7 +135,6 @@ export default {
         return {
             valid: true,
             menu: false,
-
             // payments: [{
             //     transaction_id: '',
             //     amount: '',
@@ -200,7 +201,9 @@ export default {
             }
             const { data, status } = await this.$axios.post('/addClient', form);
             if (status === 200 && data[0].success) {
-                this.listClients();
+                listClients().then((response) => {
+                    this.items = response;
+                });
                 this.dialog = false;
                 this.text = 'Client and Payments registered successfully';
                 this.snackbar = true;
@@ -208,7 +211,7 @@ export default {
                 setTimeout(() => {
                     this.snackbar = false
                 }, 2000)
-                this.$emit('client-registered', true);
+                this.$emit('client-event', 'Client registered successfully');
             }
         },
 
@@ -223,10 +226,7 @@ export default {
             }
         },
 
-        listClients: async function () {
-            const response = await this.$axios.get('/listClients');
-            this.items = response.data;
-        },
+
         editItem(item) {
             this.title = 'Edit Client';
             this.form = Object.assign({}, item);
@@ -238,18 +238,16 @@ export default {
 
 
         updateClient: async function () {
-            // verify if id is present
-            console.log(this.form);
-            const { status } = await this.$axios.put('/updateClient', this.client);
+            let form = {
+                client: this.client,
+                payments: this.payments
+            }
+            const { status } = await this.$axios.put('/updateClient', form);
             if (status === 200) {
-                this.listClients();
-                this.dialog = false;
-                this.text = 'Client Updated Successfully';
-                this.snackbar = true;
-                this.$refs.form.reset()
-                setTimeout(() => {
-                    this.snackbar = false
-                }, 2000)
+                listClients().then((response) => {
+                    this.items = response;
+                });
+                this.$emit('client-event', 'Client updated successfully');
             }
         },
     },

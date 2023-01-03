@@ -40,7 +40,7 @@
 
                                 <v-card-text>
                                     <form-component :title="title" :client="client" :payments="payments"
-                                        @client-registered="successAddClient">
+                                        @client-event="showAlert">
                                     </form-component>
                                 </v-card-text>
                             </v-card>
@@ -63,17 +63,18 @@
 </template>
 <script>
 import Form from './Form.vue';
-
+import { formatCurrency, formatDate } from '../helpers/helpers.js';
+import { listClients } from '../api/client.js';
 export default {
     data() {
         return {
             title: 'Add Client',
+            formatCurrency: formatCurrency,
+            formatDate: formatDate,
             vertical: false,
             items: [],
             snackbar: false,
-            text: 'I love snacks',
-            valid: true,
-            form: {},
+            text: '',
             client: {},
             payments: [{
                 transaction_id: '',
@@ -100,14 +101,15 @@ export default {
                 { text: 'Total', value: 'total', formatter: this.formatCurrency },
                 { text: 'Actions', value: 'actions', sortable: false }
             ],
-
         }
     },
     components: {
         'form-component': Form
     },
     mounted() {
-        this.listClients();
+        listClients().then((response) => {
+            this.items = response;
+        });
     },
     methods: {
         showDialog() {
@@ -144,18 +146,20 @@ export default {
             this.listClientPayments(item.id);
         },
 
+
+
         listClientPayments: async function (id) {
             const response = await this.$axios.get(`/listClientPayments/${id}`);
             this.payments = response.data;
         },
 
-
-        successAddClient(client) {
-            this.listClients();
+        showAlert(text) {
+            listClients().then((response) => {
+                this.items = response;
+            });
             this.dialog = false;
-            this.text = 'Client registered successfully';
+            this.text = text;
             this.snackbar = true;
-
             setTimeout(() => {
                 this.snackbar = false
             }, 2000)
@@ -163,24 +167,10 @@ export default {
         deleteItem(item) {
 
         },
-        formatCurrency(value) {
-            return "$ " + (value / 100).toFixed(2);
-        },
-        formatDate(date) {
-            const d = new Date(date)
-            const day = d.getDate()
-            const monthIndex = d.getMonth()
-            const year = d.getFullYear()
-            return `${day}/${monthIndex}/${year}`
-        },
-
-
-        listClients: async function () {
-            const response = await this.$axios.get('/listClients');
-            this.items = response.data;
-        },
-
-
+        // listClients: async function () {
+        //     const response = await this.$axios.get('/listClients');
+        //     this.items = response.data;
+        // },
     },
 }
 </script>
