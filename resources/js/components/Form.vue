@@ -5,24 +5,24 @@
             <v-container>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="First Name" v-model="form.name" :rules="nameRules"></v-text-field>
+                        <v-text-field label="First Name" v-model="client.name" :rules="nameRules"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Last Name" v-model="form.lastname" :rules="lastnameRules"></v-text-field>
+                        <v-text-field label="Last Name" v-model="client.lastname" :rules="lastnameRules"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="form.dob"
-                            transition="scale-transition" offset-y min-width="auto">
+                        <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                            :return-value.sync="client.dob" transition="scale-transition" offset-y min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="form.dob" label="DOB" type="date" :rules="dobRules"
+                                <v-text-field v-model="client.dob" label="DOB" type="date" :rules="dobRules"
                                     prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="form.dob" no-title scrollable>
+                            <v-date-picker v-model="client.dob" no-title scrollable>
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">
                                     Cancel
                                 </v-btn>
-                                <v-btn text color="primary" @click="$refs.menu.save(form.dob)">
+                                <v-btn text color="primary" @click="$refs.menu.save(client.dob)">
                                     OK
                                 </v-btn>
                             </v-date-picker>
@@ -30,15 +30,15 @@
                     </v-col>
 
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Phone" :rules="phoneRules" v-model="form.phone"></v-text-field>
+                        <v-text-field label="Phone" :rules="phoneRules" v-model="client.phone"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Email" :rules="emailRules" v-model="form.email"></v-text-field>
+                        <v-text-field label="Email" :rules="emailRules" v-model="client.email"></v-text-field>
                     </v-col>
 
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Address" :rules="addressRules" v-model="form.address"></v-text-field>
+                        <v-text-field label="Address" :rules="addressRules" v-model="client.address"></v-text-field>
                     </v-col>
 
                     <v-col cols="6" sm="6" md="6">
@@ -113,27 +113,42 @@ export default {
         },
         client: {
             type: Object,
-            required: false
+            required: true
+        },
+        payments: {
+            type: Array,
+            required: true,
+            default: () => [
+                {
+                    transaction_id: '',
+                    amount: '',
+                    date: '',
+                    menu: false
+                }],
+
         }
+
     },
     data() {
         return {
             valid: true,
             menu: false,
-            payments: [{
-                transaction_id: '',
-                amount: '',
-                date: '',
-                menu: false
-            }],
-            form: {
-                name: '',
-                lastname: '',
-                dob: '',
-                phone: '',
-                email: '',
-                address: ''
-            },
+
+            // payments: [{
+            //     transaction_id: '',
+            //     amount: '',
+            //     date: '',
+            //     menu: false
+            // }],
+
+            // form: {
+            //     name: '',
+            //     lastname: '',
+            //     dob: '',
+            //     phone: '',
+            //     email: '',
+            //     address: ''
+            // },
             nameRules: [
                 v => !!v || 'Name is required',
                 v => (v && v.length <= 20) || 'Name must be less than 20 characters'
@@ -147,7 +162,6 @@ export default {
             ],
             phoneRules: [
                 v => !!v || 'Phone is required',
-                v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
             ],
             emailRules: [
                 v => !!v || 'E-mail is required',
@@ -159,11 +173,9 @@ export default {
             ],
             transactionIdRules: [
                 v => !!v || 'Transaction ID is required',
-                v => (v && v.length <= 10) || 'Transaction ID must be less than 10 characters'
             ],
             amountRules: [
                 v => !!v || 'Amount is required',
-                v => (v && v.length <= 10) || 'Amount must be less than 10 characters'
             ],
             dateRules: [
                 v => !!v || 'Date is required'
@@ -177,10 +189,13 @@ export default {
                 this.addClient();
             }
         },
+        editClient() {
+            alert('edit')
+        },
 
         addClient: async function () {
             let form = {
-                client: this.form,
+                client: this.client,
                 payments: this.payments
             }
             const { data, status } = await this.$axios.post('/addClient', form);
@@ -219,9 +234,23 @@ export default {
             this.listClientPayments(item.id);
 
         },
-        listClientPayments: async function (id) {
-            const response = await this.$axios.get(`/listClientPayments/${id}`);
-            this.payments = response.data;
+
+
+
+        updateClient: async function () {
+            // verify if id is present
+            console.log(this.form);
+            const { status } = await this.$axios.put('/updateClient', this.client);
+            if (status === 200) {
+                this.listClients();
+                this.dialog = false;
+                this.text = 'Client Updated Successfully';
+                this.snackbar = true;
+                this.$refs.form.reset()
+                setTimeout(() => {
+                    this.snackbar = false
+                }, 2000)
+            }
         },
     },
 }

@@ -39,8 +39,9 @@
                                 </v-card-title>
 
                                 <v-card-text>
-                                    <form-component :title="title" :client="client"
-                                        @client-registered="successAddClient"></form-component>
+                                    <form-component :title="title" :client="client" :payments="payments"
+                                        @client-registered="successAddClient">
+                                    </form-component>
                                 </v-card-text>
                             </v-card>
                         </v-dialog>
@@ -68,25 +69,18 @@ export default {
         return {
             title: 'Add Client',
             vertical: false,
-            dialogPayment: false,
             items: [],
             snackbar: false,
             text: 'I love snacks',
             valid: true,
-            listOfPayments: [],
-            validPayment: true,
             form: {},
             client: {},
-            payments: [
-                {
-                    transaction_id: "",
-                    amount: "",
-                    date: "",
-                    menu: false,
-                },
-            ],
-            payment: {},
-            editedItem: {},
+            payments: [{
+                transaction_id: '',
+                amount: '',
+                date: '',
+                menu: false
+            }],
             menu: false,
             menuPayment: false,
 
@@ -119,7 +113,7 @@ export default {
         showDialog() {
             this.dialog = true;
             this.title = 'Add Client';
-            this.form = {
+            this.client = {
                 name: "",
                 lastname: "",
                 dob: "",
@@ -127,14 +121,41 @@ export default {
                 email: "",
                 address: "",
             };
+            this.payments = [{
+                transaction_id: '',
+                amount: '',
+                date: '',
+                menu: false
+            }];
         },
+
+        editItem(item) {
+            this.dialog = true;
+            this.title = 'Edit Client';
+            this.client = {
+                id: item.id,
+                name: item.name,
+                lastname: item.lastname,
+                dob: item.dob,
+                phone: item.phone,
+                email: item.email,
+                address: item.address,
+            };
+            this.listClientPayments(item.id);
+        },
+
+        listClientPayments: async function (id) {
+            const response = await this.$axios.get(`/listClientPayments/${id}`);
+            this.payments = response.data;
+        },
+
 
         successAddClient(client) {
             this.listClients();
             this.dialog = false;
             this.text = 'Client registered successfully';
             this.snackbar = true;
-           
+
             setTimeout(() => {
                 this.snackbar = false
             }, 2000)
@@ -160,21 +181,6 @@ export default {
         },
 
 
-        updateClient: async function () {
-            // verify if id is present
-            console.log(this.form);
-            const { status } = await this.$axios.put('/updateClient', this.form);
-            if (status === 200) {
-                this.listClients();
-                this.dialog = false;
-                this.text = 'Client Updated Successfully';
-                this.snackbar = true;
-                this.$refs.form.reset()
-                setTimeout(() => {
-                    this.snackbar = false
-                }, 2000)
-            }
-        },
     },
 }
 </script>

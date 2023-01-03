@@ -5324,23 +5324,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       title: 'Add Client',
       vertical: false,
-      dialogPayment: false,
       items: [],
       snackbar: false,
       text: 'I love snacks',
       valid: true,
-      listOfPayments: [],
-      validPayment: true,
       form: {},
       client: {},
       payments: [{
-        transaction_id: "",
-        amount: "",
-        date: "",
+        transaction_id: '',
+        amount: '',
+        date: '',
         menu: false
       }],
-      payment: {},
-      editedItem: {},
       menu: false,
       menuPayment: false,
       dialog: false,
@@ -5386,7 +5381,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showDialog: function showDialog() {
       this.dialog = true;
       this.title = 'Add Client';
-      this.form = {
+      this.client = {
         name: "",
         lastname: "",
         dob: "",
@@ -5394,7 +5389,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         email: "",
         address: ""
       };
+      this.payments = [{
+        transaction_id: '',
+        amount: '',
+        date: '',
+        menu: false
+      }];
     },
+    editItem: function editItem(item) {
+      this.dialog = true;
+      this.title = 'Edit Client';
+      this.client = {
+        id: item.id,
+        name: item.name,
+        lastname: item.lastname,
+        dob: item.dob,
+        phone: item.phone,
+        email: item.email,
+        address: item.address
+      };
+      this.listClientPayments(item.id);
+    },
+    listClientPayments: function () {
+      var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this.$axios.get("/listClientPayments/".concat(id));
+            case 2:
+              response = _context.sent;
+              this.payments = response.data;
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function listClientPayments(_x) {
+        return _listClientPayments.apply(this, arguments);
+      }
+      return listClientPayments;
+    }(),
     successAddClient: function successAddClient(client) {
       var _this = this;
       this.listClients();
@@ -5417,61 +5454,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return "".concat(day, "/").concat(monthIndex, "/").concat(year);
     },
     listClients: function () {
-      var _listClients = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _listClients = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var response;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return this.$axios.get('/listClients');
-            case 2:
-              response = _context.sent;
-              this.items = response.data;
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, this);
-      }));
-      function listClients() {
-        return _listClients.apply(this, arguments);
-      }
-      return listClients;
-    }(),
-    updateClient: function () {
-      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var _this2 = this;
-        var _yield$this$$axios$pu, status;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              // verify if id is present
-              console.log(this.form);
-              _context2.next = 3;
-              return this.$axios.put('/updateClient', this.form);
-            case 3:
-              _yield$this$$axios$pu = _context2.sent;
-              status = _yield$this$$axios$pu.status;
-              if (status === 200) {
-                this.listClients();
-                this.dialog = false;
-                this.text = 'Client Updated Successfully';
-                this.snackbar = true;
-                this.$refs.form.reset();
-                setTimeout(function () {
-                  _this2.snackbar = false;
-                }, 2000);
-              }
-            case 6:
+              _context2.next = 2;
+              return this.$axios.get('/listClients');
+            case 2:
+              response = _context2.sent;
+              this.items = response.data;
+            case 4:
             case "end":
               return _context2.stop();
           }
         }, _callee2, this);
       }));
-      function updateClient() {
-        return _updateClient.apply(this, arguments);
+      function listClients() {
+        return _listClients.apply(this, arguments);
       }
-      return updateClient;
+      return listClients;
     }()
   }
 });
@@ -5501,27 +5503,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     client: {
       type: Object,
-      required: false
+      required: true
+    },
+    payments: {
+      type: Array,
+      required: true,
+      "default": function _default() {
+        return [{
+          transaction_id: '',
+          amount: '',
+          date: '',
+          menu: false
+        }];
+      }
     }
   },
   data: function data() {
     return {
       valid: true,
       menu: false,
-      payments: [{
-        transaction_id: '',
-        amount: '',
-        date: '',
-        menu: false
-      }],
-      form: {
-        name: '',
-        lastname: '',
-        dob: '',
-        phone: '',
-        email: '',
-        address: ''
-      },
+      // payments: [{
+      //     transaction_id: '',
+      //     amount: '',
+      //     date: '',
+      //     menu: false
+      // }],
+
+      // form: {
+      //     name: '',
+      //     lastname: '',
+      //     dob: '',
+      //     phone: '',
+      //     email: '',
+      //     address: ''
+      // },
       nameRules: [function (v) {
         return !!v || 'Name is required';
       }, function (v) {
@@ -5537,8 +5552,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }],
       phoneRules: [function (v) {
         return !!v || 'Phone is required';
-      }, function (v) {
-        return v && v.length <= 10 || 'Phone must be less than 10 characters';
       }],
       emailRules: [function (v) {
         return !!v || 'E-mail is required';
@@ -5552,13 +5565,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }],
       transactionIdRules: [function (v) {
         return !!v || 'Transaction ID is required';
-      }, function (v) {
-        return v && v.length <= 10 || 'Transaction ID must be less than 10 characters';
       }],
       amountRules: [function (v) {
         return !!v || 'Amount is required';
-      }, function (v) {
-        return v && v.length <= 10 || 'Amount must be less than 10 characters';
       }],
       dateRules: [function (v) {
         return !!v || 'Date is required';
@@ -5572,6 +5581,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.addClient();
       }
     },
+    editClient: function editClient() {
+      alert('edit');
+    },
     addClient: function () {
       var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var _this = this;
@@ -5580,7 +5592,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               form = {
-                client: this.form,
+                client: this.client,
                 payments: this.payments
               };
               _context.next = 3;
@@ -5649,27 +5661,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.dialog = true;
       this.listClientPayments(item.id);
     },
-    listClientPayments: function () {
-      var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(id) {
-        var response;
+    updateClient: function () {
+      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _this2 = this;
+        var _yield$this$$axios$pu, status;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              _context3.next = 2;
-              return this.$axios.get("/listClientPayments/".concat(id));
-            case 2:
-              response = _context3.sent;
-              this.payments = response.data;
-            case 4:
+              // verify if id is present
+              console.log(this.form);
+              _context3.next = 3;
+              return this.$axios.put('/updateClient', this.client);
+            case 3:
+              _yield$this$$axios$pu = _context3.sent;
+              status = _yield$this$$axios$pu.status;
+              if (status === 200) {
+                this.listClients();
+                this.dialog = false;
+                this.text = 'Client Updated Successfully';
+                this.snackbar = true;
+                this.$refs.form.reset();
+                setTimeout(function () {
+                  _this2.snackbar = false;
+                }, 2000);
+              }
+            case 6:
             case "end":
               return _context3.stop();
           }
         }, _callee3, this);
       }));
-      function listClientPayments(_x) {
-        return _listClientPayments.apply(this, arguments);
+      function updateClient() {
+        return _updateClient.apply(this, arguments);
       }
-      return listClientPayments;
+      return updateClient;
     }()
   }
 });
@@ -5785,7 +5810,8 @@ var render = function render() {
         }, [_vm._v("\n                                " + _vm._s(_vm.title) + "\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("form-component", {
           attrs: {
             title: _vm.title,
-            client: _vm.client
+            client: _vm.client,
+            payments: _vm.payments
           },
           on: {
             "client-registered": _vm.successAddClient
@@ -5868,11 +5894,11 @@ var render = function render() {
       rules: _vm.nameRules
     },
     model: {
-      value: _vm.form.name,
+      value: _vm.client.name,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "name", $$v);
+        _vm.$set(_vm.client, "name", $$v);
       },
-      expression: "form.name"
+      expression: "client.name"
     }
   })], 1), _vm._v(" "), _c("v-col", {
     attrs: {
@@ -5886,11 +5912,11 @@ var render = function render() {
       rules: _vm.lastnameRules
     },
     model: {
-      value: _vm.form.lastname,
+      value: _vm.client.lastname,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "lastname", $$v);
+        _vm.$set(_vm.client, "lastname", $$v);
       },
-      expression: "form.lastname"
+      expression: "client.lastname"
     }
   })], 1), _vm._v(" "), _c("v-col", {
     attrs: {
@@ -5902,17 +5928,17 @@ var render = function render() {
     ref: "menu",
     attrs: {
       "close-on-content-click": false,
-      "return-value": _vm.form.dob,
+      "return-value": _vm.client.dob,
       transition: "scale-transition",
       "offset-y": "",
       "min-width": "auto"
     },
     on: {
       "update:returnValue": function updateReturnValue($event) {
-        return _vm.$set(_vm.form, "dob", $event);
+        return _vm.$set(_vm.client, "dob", $event);
       },
       "update:return-value": function updateReturnValue($event) {
-        return _vm.$set(_vm.form, "dob", $event);
+        return _vm.$set(_vm.client, "dob", $event);
       }
     },
     scopedSlots: _vm._u([{
@@ -5929,11 +5955,11 @@ var render = function render() {
             readonly: ""
           },
           model: {
-            value: _vm.form.dob,
+            value: _vm.client.dob,
             callback: function callback($$v) {
-              _vm.$set(_vm.form, "dob", $$v);
+              _vm.$set(_vm.client, "dob", $$v);
             },
-            expression: "form.dob"
+            expression: "client.dob"
           }
         }, "v-text-field", attrs, false), on))];
       }
@@ -5951,11 +5977,11 @@ var render = function render() {
       scrollable: ""
     },
     model: {
-      value: _vm.form.dob,
+      value: _vm.client.dob,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "dob", $$v);
+        _vm.$set(_vm.client, "dob", $$v);
       },
-      expression: "form.dob"
+      expression: "client.dob"
     }
   }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
     attrs: {
@@ -5974,7 +6000,7 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.$refs.menu.save(_vm.form.dob);
+        return _vm.$refs.menu.save(_vm.client.dob);
       }
     }
   }, [_vm._v("\n                                OK\n                            ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
@@ -5989,11 +6015,11 @@ var render = function render() {
       rules: _vm.phoneRules
     },
     model: {
-      value: _vm.form.phone,
+      value: _vm.client.phone,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "phone", $$v);
+        _vm.$set(_vm.client, "phone", $$v);
       },
-      expression: "form.phone"
+      expression: "client.phone"
     }
   })], 1), _vm._v(" "), _c("v-col", {
     attrs: {
@@ -6007,11 +6033,11 @@ var render = function render() {
       rules: _vm.emailRules
     },
     model: {
-      value: _vm.form.email,
+      value: _vm.client.email,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "email", $$v);
+        _vm.$set(_vm.client, "email", $$v);
       },
-      expression: "form.email"
+      expression: "client.email"
     }
   })], 1), _vm._v(" "), _c("v-col", {
     attrs: {
@@ -6025,11 +6051,11 @@ var render = function render() {
       rules: _vm.addressRules
     },
     model: {
-      value: _vm.form.address,
+      value: _vm.client.address,
       callback: function callback($$v) {
-        _vm.$set(_vm.form, "address", $$v);
+        _vm.$set(_vm.client, "address", $$v);
       },
-      expression: "form.address"
+      expression: "client.address"
     }
   })], 1), _vm._v(" "), _c("v-col", {
     attrs: {
