@@ -5313,10 +5313,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Form_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue */ "./resources/js/components/Form.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5326,43 +5328,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       items: [],
       snackbar: false,
       text: 'I love snacks',
-      nameRules: [function (v) {
-        return !!v || 'Name is required';
-      }],
-      lastnameRules: [function (v) {
-        return !!v || 'Last Name is required';
-      }],
-      dobRules: [function (v) {
-        return !!v || 'DOB is required';
-      }],
-      dateRules: [function (v) {
-        return !!v || 'Date is required';
-      }],
-      phoneRules: [function (v) {
-        return !!v || 'Phone is required';
-      }],
-      emailRules: [function (v) {
-        return !!v || 'Email is required';
-      }],
-      addressRules: [function (v) {
-        return !!v || 'Address is required';
-      }],
-      amountRules: [function (v) {
-        return !!v || 'Amount is required';
-      }, function (v) {
-        return /^\d+$/.test(v) || 'Amount must be a number';
-      }],
-      transactionIdRules: [function (v) {
-        return !!v || 'Transaction Id is required';
-      }],
-      clientIdRules: [function (v) {
-        return !!v || 'Client is required';
-      }],
       valid: true,
       listOfPayments: [],
       validPayment: true,
       form: {},
-      formPayment: {},
+      client: {},
       payments: [{
         transaction_id: "",
         amount: "",
@@ -5406,10 +5376,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]
     };
   },
+  components: {
+    'form-component': _Form_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   mounted: function mounted() {
     this.listClients();
   },
-  watch: {},
   methods: {
     showDialog: function showDialog() {
       this.dialog = true;
@@ -5423,44 +5395,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         address: ""
       };
     },
-    addMore: function addMore() {
-      if (this.payments.length < 5) {
-        this.payments.push({
-          transaction_id: "",
-          amount: "",
-          date: "",
-          menu: false
-        });
-      }
+    successAddClient: function successAddClient(client) {
+      var _this = this;
+      this.listClients();
+      this.dialog = false;
+      this.text = 'Client registered successfully';
+      this.snackbar = true;
+      setTimeout(function () {
+        _this.snackbar = false;
+      }, 2000);
     },
-    editItem: function editItem(item) {
-      this.title = 'Edit Client';
-      this.form = Object.assign({}, item);
-      this.dialog = true;
-      this.listClientPayments(item.id);
-    },
-    listClientPayments: function () {
-      var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
-        var response;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return this.$axios.get("/listClientPayments/".concat(id));
-            case 2:
-              response = _context.sent;
-              this.payments = response.data;
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }, _callee, this);
-      }));
-      function listClientPayments(_x) {
-        return _listClientPayments.apply(this, arguments);
-      }
-      return listClientPayments;
-    }(),
     deleteItem: function deleteItem(item) {},
     formatCurrency: function formatCurrency(value) {
       return "$ " + (value / 100).toFixed(2);
@@ -5472,130 +5416,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var year = d.getFullYear();
       return "".concat(day, "/").concat(monthIndex, "/").concat(year);
     },
-    validate: function validate() {
-      var clientValid = this.$refs.form.validate();
-      if (clientValid) {
-        this.addClient();
-      }
-
-      // if (valid) {
-      //     this.addClient();
-      //     this.dialog = false;
-      //     this.text = 'Client Added Successfully';
-      //     this.snackbar = true;
-      //     this.$refs.form.reset()
-      //     setTimeout(() => {
-      //         this.snackbar = false
-      //     }, 2000)
-      // }
-    },
-
-    validatePayment: function () {
-      var _validatePayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var _this = this;
-        var _yield$this$$axios$po, status;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return this.$axios.post('/addPayment', this.listOfPayments);
-            case 2:
-              _yield$this$$axios$po = _context2.sent;
-              status = _yield$this$$axios$po.status;
-              if (status === 200) {
-                this.listClients();
-                this.dialogPayment = false;
-                this.text = 'Payments Added Successfully';
-                this.snackbar = true;
-                this.$refs.formPayment.reset();
-                setTimeout(function () {
-                  _this.snackbar = false;
-                }, 2000);
-              }
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2, this);
-      }));
-      function validatePayment() {
-        return _validatePayment.apply(this, arguments);
-      }
-      return validatePayment;
-    }(),
     listClients: function () {
-      var _listClients = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var _listClients = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
             case 0:
-              _context3.next = 2;
+              _context.next = 2;
               return this.$axios.get('/listClients');
             case 2:
-              response = _context3.sent;
+              response = _context.sent;
               this.items = response.data;
             case 4:
             case "end":
-              return _context3.stop();
+              return _context.stop();
           }
-        }, _callee3, this);
+        }, _callee, this);
       }));
       function listClients() {
         return _listClients.apply(this, arguments);
       }
       return listClients;
     }(),
-    addClient: function () {
-      var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var _this2 = this;
-        var form, _yield$this$$axios$po2, data, status;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              form = {
-                client: this.form,
-                payments: this.payments
-              };
-              _context4.next = 3;
-              return this.$axios.post('/addClient', form);
-            case 3:
-              _yield$this$$axios$po2 = _context4.sent;
-              data = _yield$this$$axios$po2.data;
-              status = _yield$this$$axios$po2.status;
-              if (status === 200 && data[0].success) {
-                this.listClients();
-                this.dialog = false;
-                this.text = 'Client and Payments registered successfully';
-                this.snackbar = true;
-                this.$refs.form.reset();
-                setTimeout(function () {
-                  _this2.snackbar = false;
-                }, 2000);
-              }
-            case 7:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4, this);
-      }));
-      function addClient() {
-        return _addClient.apply(this, arguments);
-      }
-      return addClient;
-    }(),
     updateClient: function () {
-      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var _this3 = this;
+      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var _this2 = this;
         var _yield$this$$axios$pu, status;
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-          while (1) switch (_context5.prev = _context5.next) {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
             case 0:
               // verify if id is present
               console.log(this.form);
-              _context5.next = 3;
+              _context2.next = 3;
               return this.$axios.put('/updateClient', this.form);
             case 3:
-              _yield$this$$axios$pu = _context5.sent;
+              _yield$this$$axios$pu = _context2.sent;
               status = _yield$this$$axios$pu.status;
               if (status === 200) {
                 this.listClients();
@@ -5604,52 +5459,217 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.snackbar = true;
                 this.$refs.form.reset();
                 setTimeout(function () {
-                  _this3.snackbar = false;
+                  _this2.snackbar = false;
                 }, 2000);
               }
             case 6:
             case "end":
-              return _context5.stop();
+              return _context2.stop();
           }
-        }, _callee5, this);
+        }, _callee2, this);
       }));
       function updateClient() {
         return _updateClient.apply(this, arguments);
       }
       return updateClient;
-    }(),
-    addPayment: function () {
-      var _addPayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var _this4 = this;
-        var _yield$this$$axios$po3, status;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) switch (_context6.prev = _context6.next) {
-            case 0:
-              _context6.next = 2;
-              return this.$axios.post('/addPayment', this.formPayment);
-            case 2:
-              _yield$this$$axios$po3 = _context6.sent;
-              status = _yield$this$$axios$po3.status;
-              if (status === 200) {
-                this.listClients();
-                this.dialogPayment = false;
-                this.text = 'Payment Added Successfully';
-                this.snackbar = true;
-                this.$refs.formPayment.reset();
-                setTimeout(function () {
-                  _this4.snackbar = false;
-                }, 2000);
-              }
-            case 5:
-            case "end":
-              return _context6.stop();
-          }
-        }, _callee6, this);
-      }));
-      function addPayment() {
-        return _addPayment.apply(this, arguments);
+    }()
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    client: {
+      type: Object,
+      required: false
+    }
+  },
+  data: function data() {
+    return {
+      valid: true,
+      menu: false,
+      payments: [{
+        transaction_id: '',
+        amount: '',
+        date: '',
+        menu: false
+      }],
+      form: {
+        name: '',
+        lastname: '',
+        dob: '',
+        phone: '',
+        email: '',
+        address: ''
+      },
+      nameRules: [function (v) {
+        return !!v || 'Name is required';
+      }, function (v) {
+        return v && v.length <= 20 || 'Name must be less than 20 characters';
+      }],
+      lastnameRules: [function (v) {
+        return !!v || 'Last Name is required';
+      }, function (v) {
+        return v && v.length <= 20 || 'Last Name must be less than 20 characters';
+      }],
+      dobRules: [function (v) {
+        return !!v || 'DOB is required';
+      }],
+      phoneRules: [function (v) {
+        return !!v || 'Phone is required';
+      }, function (v) {
+        return v && v.length <= 10 || 'Phone must be less than 10 characters';
+      }],
+      emailRules: [function (v) {
+        return !!v || 'E-mail is required';
+      }, function (v) {
+        return /.+@.+\..+/.test(v) || 'E-mail must be valid';
+      }],
+      addressRules: [function (v) {
+        return !!v || 'Address is required';
+      }, function (v) {
+        return v && v.length <= 50 || 'Address must be less than 50 characters';
+      }],
+      transactionIdRules: [function (v) {
+        return !!v || 'Transaction ID is required';
+      }, function (v) {
+        return v && v.length <= 10 || 'Transaction ID must be less than 10 characters';
+      }],
+      amountRules: [function (v) {
+        return !!v || 'Amount is required';
+      }, function (v) {
+        return v && v.length <= 10 || 'Amount must be less than 10 characters';
+      }],
+      dateRules: [function (v) {
+        return !!v || 'Date is required';
+      }]
+    };
+  },
+  methods: {
+    validate: function validate() {
+      var clientValid = this.$refs.form.validate();
+      if (clientValid) {
+        this.addClient();
       }
-      return addPayment;
+    },
+    addClient: function () {
+      var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _this = this;
+        var form, _yield$this$$axios$po, data, status;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              form = {
+                client: this.form,
+                payments: this.payments
+              };
+              _context.next = 3;
+              return this.$axios.post('/addClient', form);
+            case 3:
+              _yield$this$$axios$po = _context.sent;
+              data = _yield$this$$axios$po.data;
+              status = _yield$this$$axios$po.status;
+              if (status === 200 && data[0].success) {
+                this.listClients();
+                this.dialog = false;
+                this.text = 'Client and Payments registered successfully';
+                this.snackbar = true;
+                this.$refs.form.reset();
+                setTimeout(function () {
+                  _this.snackbar = false;
+                }, 2000);
+                this.$emit('client-registered', true);
+              }
+            case 7:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function addClient() {
+        return _addClient.apply(this, arguments);
+      }
+      return addClient;
+    }(),
+    addMore: function addMore() {
+      if (this.payments.length < 5) {
+        this.payments.push({
+          transaction_id: "",
+          amount: "",
+          date: "",
+          menu: false
+        });
+      }
+    },
+    listClients: function () {
+      var _listClients = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.$axios.get('/listClients');
+            case 2:
+              response = _context2.sent;
+              this.items = response.data;
+            case 4:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+      function listClients() {
+        return _listClients.apply(this, arguments);
+      }
+      return listClients;
+    }(),
+    editItem: function editItem(item) {
+      this.title = 'Edit Client';
+      this.form = Object.assign({}, item);
+      this.dialog = true;
+      this.listClientPayments(item.id);
+    },
+    listClientPayments: function () {
+      var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(id) {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return this.$axios.get("/listClientPayments/".concat(id));
+            case 2:
+              response = _context3.sent;
+              this.payments = response.data;
+            case 4:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3, this);
+      }));
+      function listClientPayments(_x) {
+        return _listClientPayments.apply(this, arguments);
+      }
+      return listClientPayments;
     }()
   }
 });
@@ -5762,390 +5782,21 @@ var render = function render() {
           }
         }, [_vm._v(" "), _c("v-card", [_c("v-card-title", {
           staticClass: "text-h5 grey lighten-2"
-        }, [_vm._v("\n                                " + _vm._s(_vm.title) + "\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", [_c("h2", {
-          staticClass: "text-left"
-        }, [_vm._v("Personal Information")]), _vm._v(" "), _c("v-form", {
-          ref: "form",
+        }, [_vm._v("\n                                " + _vm._s(_vm.title) + "\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("form-component", {
           attrs: {
-            "lazy-validation": ""
-          },
-          model: {
-            value: _vm.valid,
-            callback: function callback($$v) {
-              _vm.valid = $$v;
-            },
-            expression: "valid"
-          }
-        }, [_c("v-container", [_c("v-row", [_c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "First Name",
-            rules: _vm.nameRules
-          },
-          model: {
-            value: _vm.form.name,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "name", $$v);
-            },
-            expression: "form.name"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Last Name",
-            rules: _vm.lastnameRules
-          },
-          model: {
-            value: _vm.form.lastname,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "lastname", $$v);
-            },
-            expression: "form.lastname"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-menu", {
-          ref: "menu",
-          attrs: {
-            "close-on-content-click": false,
-            "return-value": _vm.form.dob,
-            transition: "scale-transition",
-            "offset-y": "",
-            "min-width": "auto"
+            title: _vm.title,
+            client: _vm.client
           },
           on: {
-            "update:returnValue": function updateReturnValue($event) {
-              return _vm.$set(_vm.form, "dob", $event);
-            },
-            "update:return-value": function updateReturnValue($event) {
-              return _vm.$set(_vm.form, "dob", $event);
-            }
-          },
-          scopedSlots: _vm._u([{
-            key: "activator",
-            fn: function fn(_ref5) {
-              var on = _ref5.on,
-                attrs = _ref5.attrs;
-              return [_c("v-text-field", _vm._g(_vm._b({
-                attrs: {
-                  label: "DOB",
-                  type: "date",
-                  rules: _vm.dobRules,
-                  "prepend-icon": "mdi-calendar",
-                  readonly: ""
-                },
-                model: {
-                  value: _vm.form.dob,
-                  callback: function callback($$v) {
-                    _vm.$set(_vm.form, "dob", $$v);
-                  },
-                  expression: "form.dob"
-                }
-              }, "v-text-field", attrs, false), on))];
-            }
-          }]),
-          model: {
-            value: _vm.menu,
-            callback: function callback($$v) {
-              _vm.menu = $$v;
-            },
-            expression: "menu"
+            "client-registered": _vm.successAddClient
           }
-        }, [_vm._v(" "), _c("v-date-picker", {
-          attrs: {
-            "no-title": "",
-            scrollable: ""
-          },
-          model: {
-            value: _vm.form.dob,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "dob", $$v);
-            },
-            expression: "form.dob"
-          }
-        }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
-          attrs: {
-            text: "",
-            color: "primary"
-          },
-          on: {
-            click: function click($event) {
-              _vm.menu = false;
-            }
-          }
-        }, [_vm._v("\n                                                                Cancel\n                                                            ")]), _vm._v(" "), _c("v-btn", {
-          attrs: {
-            text: "",
-            color: "primary"
-          },
-          on: {
-            click: function click($event) {
-              return _vm.$refs.menu.save(_vm.form.dob);
-            }
-          }
-        }, [_vm._v("\n                                                                OK\n                                                            ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Phone",
-            rules: _vm.phoneRules
-          },
-          model: {
-            value: _vm.form.phone,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "phone", $$v);
-            },
-            expression: "form.phone"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Email",
-            rules: _vm.emailRules
-          },
-          model: {
-            value: _vm.form.email,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "email", $$v);
-            },
-            expression: "form.email"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "6",
-            md: "4"
-          }
-        }, [_c("v-text-field", {
-          attrs: {
-            label: "Address",
-            rules: _vm.addressRules
-          },
-          model: {
-            value: _vm.form.address,
-            callback: function callback($$v) {
-              _vm.$set(_vm.form, "address", $$v);
-            },
-            expression: "form.address"
-          }
-        })], 1), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "6",
-            sm: "6",
-            md: "6"
-          }
-        }, [_c("h2", {
-          staticClass: "text-left"
-        }, [_vm._v("PAYMENTS")])]), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "6",
-            sm: "6",
-            md: "6"
-          }
-        }, [_c("v-btn", {
-          staticClass: "mx-2",
-          attrs: {
-            fab: "",
-            dark: "",
-            color: "primary"
-          },
-          on: {
-            click: function click($event) {
-              return _vm.addMore();
-            }
-          }
-        }, [_c("v-icon", {
-          attrs: {
-            dark: ""
-          }
-        }, [_vm._v("\n                                                            mdi-plus\n                                                        ")])], 1)], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
-          return _c("v-col", {
-            key: index,
-            attrs: {
-              cols: "12",
-              sm: "12",
-              md: "12"
-            }
-          }, [_c("v-row", [_c("v-col", {
-            attrs: {
-              cols: "12",
-              sm: "6",
-              md: "4"
-            }
-          }, [_c("v-text-field", {
-            attrs: {
-              label: "Transaction ID",
-              type: "number",
-              rules: _vm.transactionIdRules
-            },
-            model: {
-              value: _vm.payments[index].transaction_id,
-              callback: function callback($$v) {
-                _vm.$set(_vm.payments[index], "transaction_id", $$v);
-              },
-              expression: "payments[index].transaction_id"
-            }
-          })], 1), _vm._v(" "), _c("v-col", {
-            attrs: {
-              cols: "12",
-              sm: "6",
-              md: "4"
-            }
-          }, [_c("v-text-field", {
-            attrs: {
-              label: "Amount",
-              type: "number",
-              prefix: "$",
-              rules: _vm.amountRules
-            },
-            model: {
-              value: payment.amount,
-              callback: function callback($$v) {
-                _vm.$set(payment, "amount", $$v);
-              },
-              expression: "payment.amount"
-            }
-          })], 1), _vm._v(" "), _c("v-col", {
-            attrs: {
-              cols: "12",
-              sm: "6",
-              md: "4"
-            }
-          }, [_c("v-menu", {
-            ref: "payment",
-            refInFor: true,
-            attrs: {
-              "close-on-content-click": false,
-              "return-value": payment.date,
-              transition: "scale-transition",
-              "offset-y": "",
-              "min-width": "auto"
-            },
-            on: {
-              "update:returnValue": function updateReturnValue($event) {
-                return _vm.$set(payment, "date", $event);
-              },
-              "update:return-value": function updateReturnValue($event) {
-                return _vm.$set(payment, "date", $event);
-              }
-            },
-            scopedSlots: _vm._u([{
-              key: "activator",
-              fn: function fn(_ref6) {
-                var on = _ref6.on,
-                  attrs = _ref6.attrs;
-                return [_c("v-text-field", _vm._g(_vm._b({
-                  attrs: {
-                    type: "date",
-                    label: "Date",
-                    rules: _vm.dateRules,
-                    "prepend-icon": "mdi-calendar",
-                    readonly: ""
-                  },
-                  model: {
-                    value: payment.date,
-                    callback: function callback($$v) {
-                      _vm.$set(payment, "date", $$v);
-                    },
-                    expression: "payment.date"
-                  }
-                }, "v-text-field", attrs, false), on))];
-              }
-            }], null, true),
-            model: {
-              value: payment.menu,
-              callback: function callback($$v) {
-                _vm.$set(payment, "menu", $$v);
-              },
-              expression: "payment.menu"
-            }
-          }, [_vm._v(" "), _c("v-date-picker", {
-            attrs: {
-              "no-title": "",
-              scrollable: ""
-            },
-            model: {
-              value: payment.date,
-              callback: function callback($$v) {
-                _vm.$set(payment, "date", $$v);
-              },
-              expression: "payment.date"
-            }
-          }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
-            attrs: {
-              text: "",
-              color: "primary"
-            },
-            on: {
-              click: function click($event) {
-                payment.menu = false;
-              }
-            }
-          }, [_vm._v("\n                                                                        Cancel\n                                                                    ")]), _vm._v(" "), _c("v-btn", {
-            attrs: {
-              text: "",
-              color: "primary"
-            },
-            on: {
-              click: function click($event) {
-                return _vm.$refs.payment[index].save(payment.date);
-              }
-            }
-          }, [_vm._v("\n                                                                        OK\n                                                                    ")])], 1)], 1)], 1)], 1)], 1);
-        }), _vm._v(" "), _c("v-col", {
-          attrs: {
-            cols: "12",
-            sm: "12",
-            md: "12"
-          }
-        }, [_vm.title !== "Edit Client" ? _c("v-btn", {
-          staticClass: "mr-4",
-          attrs: {
-            disabled: !_vm.valid,
-            color: "green"
-          },
-          on: {
-            click: _vm.validate
-          }
-        }, [_vm._v("\n                                                        Save\n                                                    ")]) : _c("v-btn", {
-          staticClass: "mr-4",
-          attrs: {
-            disabled: !_vm.valid,
-            color: "green"
-          },
-          on: {
-            click: _vm.updateClient
-          }
-        }, [_vm._v("\n                                                        Update\n                                                    ")])], 1)], 2)], 1)], 1)], 1)], 1)], 1)], 1)], 1)];
+        })], 1)], 1)], 1)], 1)];
       },
       proxy: true
     }, {
       key: "item.actions",
-      fn: function fn(_ref7) {
-        var item = _ref7.item;
+      fn: function fn(_ref5) {
+        var item = _ref5.item;
         return [_c("v-icon", {
           staticClass: "mr-2",
           attrs: {
@@ -6169,6 +5820,406 @@ var render = function render() {
       }
     }])
   })], 1)], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=template&id=8048fca2&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=template&id=8048fca2& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("v-container", [_c("h2", {
+    staticClass: "text-left"
+  }, [_vm._v("Personal Information")]), _vm._v(" "), _c("v-form", {
+    ref: "form",
+    attrs: {
+      "lazy-validation": ""
+    },
+    model: {
+      value: _vm.valid,
+      callback: function callback($$v) {
+        _vm.valid = $$v;
+      },
+      expression: "valid"
+    }
+  }, [_c("v-container", [_c("v-row", [_c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-text-field", {
+    attrs: {
+      label: "First Name",
+      rules: _vm.nameRules
+    },
+    model: {
+      value: _vm.form.name,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "name", $$v);
+      },
+      expression: "form.name"
+    }
+  })], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-text-field", {
+    attrs: {
+      label: "Last Name",
+      rules: _vm.lastnameRules
+    },
+    model: {
+      value: _vm.form.lastname,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "lastname", $$v);
+      },
+      expression: "form.lastname"
+    }
+  })], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-menu", {
+    ref: "menu",
+    attrs: {
+      "close-on-content-click": false,
+      "return-value": _vm.form.dob,
+      transition: "scale-transition",
+      "offset-y": "",
+      "min-width": "auto"
+    },
+    on: {
+      "update:returnValue": function updateReturnValue($event) {
+        return _vm.$set(_vm.form, "dob", $event);
+      },
+      "update:return-value": function updateReturnValue($event) {
+        return _vm.$set(_vm.form, "dob", $event);
+      }
+    },
+    scopedSlots: _vm._u([{
+      key: "activator",
+      fn: function fn(_ref) {
+        var on = _ref.on,
+          attrs = _ref.attrs;
+        return [_c("v-text-field", _vm._g(_vm._b({
+          attrs: {
+            label: "DOB",
+            type: "date",
+            rules: _vm.dobRules,
+            "prepend-icon": "mdi-calendar",
+            readonly: ""
+          },
+          model: {
+            value: _vm.form.dob,
+            callback: function callback($$v) {
+              _vm.$set(_vm.form, "dob", $$v);
+            },
+            expression: "form.dob"
+          }
+        }, "v-text-field", attrs, false), on))];
+      }
+    }]),
+    model: {
+      value: _vm.menu,
+      callback: function callback($$v) {
+        _vm.menu = $$v;
+      },
+      expression: "menu"
+    }
+  }, [_vm._v(" "), _c("v-date-picker", {
+    attrs: {
+      "no-title": "",
+      scrollable: ""
+    },
+    model: {
+      value: _vm.form.dob,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "dob", $$v);
+      },
+      expression: "form.dob"
+    }
+  }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
+    attrs: {
+      text: "",
+      color: "primary"
+    },
+    on: {
+      click: function click($event) {
+        _vm.menu = false;
+      }
+    }
+  }, [_vm._v("\n                                Cancel\n                            ")]), _vm._v(" "), _c("v-btn", {
+    attrs: {
+      text: "",
+      color: "primary"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.$refs.menu.save(_vm.form.dob);
+      }
+    }
+  }, [_vm._v("\n                                OK\n                            ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-text-field", {
+    attrs: {
+      label: "Phone",
+      rules: _vm.phoneRules
+    },
+    model: {
+      value: _vm.form.phone,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "phone", $$v);
+      },
+      expression: "form.phone"
+    }
+  })], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-text-field", {
+    attrs: {
+      label: "Email",
+      rules: _vm.emailRules
+    },
+    model: {
+      value: _vm.form.email,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "email", $$v);
+      },
+      expression: "form.email"
+    }
+  })], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "6",
+      md: "4"
+    }
+  }, [_c("v-text-field", {
+    attrs: {
+      label: "Address",
+      rules: _vm.addressRules
+    },
+    model: {
+      value: _vm.form.address,
+      callback: function callback($$v) {
+        _vm.$set(_vm.form, "address", $$v);
+      },
+      expression: "form.address"
+    }
+  })], 1), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "6",
+      sm: "6",
+      md: "6"
+    }
+  }, [_c("h2", {
+    staticClass: "text-left"
+  }, [_vm._v("PAYMENTS")])]), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "6",
+      sm: "6",
+      md: "6"
+    }
+  }, [_c("v-btn", {
+    staticClass: "mx-2",
+    attrs: {
+      fab: "",
+      dark: "",
+      color: "primary"
+    },
+    on: {
+      click: function click($event) {
+        return _vm.addMore();
+      }
+    }
+  }, [_c("v-icon", {
+    attrs: {
+      dark: ""
+    }
+  }, [_vm._v("\n                            mdi-plus\n                        ")])], 1)], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
+    return _c("v-col", {
+      key: index,
+      attrs: {
+        cols: "12",
+        sm: "12",
+        md: "12"
+      }
+    }, [_c("v-row", [_c("v-col", {
+      attrs: {
+        cols: "12",
+        sm: "6",
+        md: "4"
+      }
+    }, [_c("v-text-field", {
+      attrs: {
+        label: "Transaction ID",
+        type: "number",
+        rules: _vm.transactionIdRules
+      },
+      model: {
+        value: _vm.payments[index].transaction_id,
+        callback: function callback($$v) {
+          _vm.$set(_vm.payments[index], "transaction_id", $$v);
+        },
+        expression: "payments[index].transaction_id"
+      }
+    })], 1), _vm._v(" "), _c("v-col", {
+      attrs: {
+        cols: "12",
+        sm: "6",
+        md: "4"
+      }
+    }, [_c("v-text-field", {
+      attrs: {
+        label: "Amount",
+        type: "number",
+        prefix: "$",
+        rules: _vm.amountRules
+      },
+      model: {
+        value: payment.amount,
+        callback: function callback($$v) {
+          _vm.$set(payment, "amount", $$v);
+        },
+        expression: "payment.amount"
+      }
+    })], 1), _vm._v(" "), _c("v-col", {
+      attrs: {
+        cols: "12",
+        sm: "6",
+        md: "4"
+      }
+    }, [_c("v-menu", {
+      ref: "payment",
+      refInFor: true,
+      attrs: {
+        "close-on-content-click": false,
+        "return-value": payment.date,
+        transition: "scale-transition",
+        "offset-y": "",
+        "min-width": "auto"
+      },
+      on: {
+        "update:returnValue": function updateReturnValue($event) {
+          return _vm.$set(payment, "date", $event);
+        },
+        "update:return-value": function updateReturnValue($event) {
+          return _vm.$set(payment, "date", $event);
+        }
+      },
+      scopedSlots: _vm._u([{
+        key: "activator",
+        fn: function fn(_ref2) {
+          var on = _ref2.on,
+            attrs = _ref2.attrs;
+          return [_c("v-text-field", _vm._g(_vm._b({
+            attrs: {
+              type: "date",
+              label: "Date",
+              rules: _vm.dateRules,
+              "prepend-icon": "mdi-calendar",
+              readonly: ""
+            },
+            model: {
+              value: payment.date,
+              callback: function callback($$v) {
+                _vm.$set(payment, "date", $$v);
+              },
+              expression: "payment.date"
+            }
+          }, "v-text-field", attrs, false), on))];
+        }
+      }], null, true),
+      model: {
+        value: payment.menu,
+        callback: function callback($$v) {
+          _vm.$set(payment, "menu", $$v);
+        },
+        expression: "payment.menu"
+      }
+    }, [_vm._v(" "), _c("v-date-picker", {
+      attrs: {
+        "no-title": "",
+        scrollable: ""
+      },
+      model: {
+        value: payment.date,
+        callback: function callback($$v) {
+          _vm.$set(payment, "date", $$v);
+        },
+        expression: "payment.date"
+      }
+    }, [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
+      attrs: {
+        text: "",
+        color: "primary"
+      },
+      on: {
+        click: function click($event) {
+          payment.menu = false;
+        }
+      }
+    }, [_vm._v("\n                                        Cancel\n                                    ")]), _vm._v(" "), _c("v-btn", {
+      attrs: {
+        text: "",
+        color: "primary"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.$refs.payment[index].save(payment.date);
+        }
+      }
+    }, [_vm._v("\n                                        OK\n                                    ")])], 1)], 1)], 1)], 1)], 1);
+  }), _vm._v(" "), _c("v-col", {
+    attrs: {
+      cols: "12",
+      sm: "12",
+      md: "12"
+    }
+  }, [_vm.title !== "Edit Client" ? _c("v-btn", {
+    staticClass: "mr-4",
+    attrs: {
+      disabled: !_vm.valid,
+      color: "green"
+    },
+    on: {
+      click: _vm.validate
+    }
+  }, [_vm._v("\n                        Save\n                    ")]) : _c("v-btn", {
+    staticClass: "mr-4",
+    attrs: {
+      disabled: !_vm.valid,
+      color: "green"
+    },
+    on: {
+      click: _vm.updateClient
+    }
+  }, [_vm._v("\n                        Update\n                    ")])], 1)], 2)], 1)], 1)], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -29340,6 +29391,45 @@ component.options.__file = "resources/js/components/Clients.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Form.vue":
+/*!******************************************!*\
+  !*** ./resources/js/components/Form.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue?vue&type=template&id=8048fca2& */ "./resources/js/components/Form.vue?vue&type=template&id=8048fca2&");
+/* harmony import */ var _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form.vue?vue&type=script&lang=js& */ "./resources/js/components/Form.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Form.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Clients.vue?vue&type=script&lang=js&":
 /*!**********************************************************************!*\
   !*** ./resources/js/components/Clients.vue?vue&type=script&lang=js& ***!
@@ -29356,6 +29446,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Form.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Form.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Clients.vue?vue&type=template&id=63a32926&":
 /*!****************************************************************************!*\
   !*** ./resources/js/components/Clients.vue?vue&type=template&id=63a32926& ***!
@@ -29369,6 +29475,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Clients_vue_vue_type_template_id_63a32926___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Clients_vue_vue_type_template_id_63a32926___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Clients.vue?vue&type=template&id=63a32926& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Clients.vue?vue&type=template&id=63a32926&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Form.vue?vue&type=template&id=8048fca2&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Form.vue?vue&type=template&id=8048fca2& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_8048fca2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Form.vue?vue&type=template&id=8048fca2& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Form.vue?vue&type=template&id=8048fca2&");
 
 
 /***/ }),
