@@ -32,10 +32,10 @@ class CreateClientsTable extends Migration
         DB::unprepared($listClient);
 
 
-        $updateClient = "CREATE PROCEDURE updateClient (IN id INT, IN name VARCHAR(255), IN lastname VARCHAR(255), IN dob DATE, IN phone VARCHAR(255), IN email VARCHAR(255), IN address VARCHAR(255)) BEGIN UPDATE clients SET name = name, lastname = lastname, dob = dob, phone = phone, email = email, address = address WHERE id = id; SELECT true AS success; END";
+        $updateClient = "CREATE PROCEDURE updateClient (IN sp_id INT, IN name VARCHAR(255), IN lastname VARCHAR(255), IN dob DATE, IN phone VARCHAR(255), IN email VARCHAR(255), IN address VARCHAR(255)) BEGIN UPDATE clients SET name = name, lastname = lastname, dob = dob, phone = phone, email = email, address = address WHERE id = sp_id; SELECT true AS success; END";
         DB::unprepared($updateClient);
 
-        $removeClient = "CREATE PROCEDURE removeClient (IN id INT) BEGIN DELETE FROM clients WHERE id = id; END";
+        $removeClient = "CREATE PROCEDURE removeClient (IN sp_id INT) BEGIN DELETE FROM clients WHERE id = sp_id; END";
         DB::unprepared($removeClient);
     }
 

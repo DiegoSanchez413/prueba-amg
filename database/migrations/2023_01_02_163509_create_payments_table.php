@@ -30,6 +30,9 @@ class CreatePaymentsTable extends Migration
 
         $getPaymentsById = "CREATE PROCEDURE getPaymentsById(IN id INT) BEGIN SELECT payments.id, payments.transaction_id, payments.client_id, payments.amount, payments.date FROM payments WHERE client_id = id; END";
         DB::unprepared($getPaymentsById);
+
+        $updatePayment = "CREATE PROCEDURE updatePayment(IN sp_id INT, IN transactionId VARCHAR(255), IN clientId INT, IN amount INT, IN date DATE) BEGIN UPDATE payments SET transaction_id = transactionId, client_id = clientId, amount = amount, date = date WHERE id = sp_id; END";
+        DB::unprepared($updatePayment);
     }
 
     /**

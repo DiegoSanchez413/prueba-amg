@@ -5342,7 +5342,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }],
       menu: false,
       menuPayment: false,
-      dialog: false,
+      showDeleteForm: false,
+      showForm: false,
       headers: [{
         text: 'Client Name',
         align: 'start',
@@ -5386,7 +5387,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     showDialog: function showDialog() {
-      this.dialog = true;
+      this.showForm = true;
       this.title = 'Add Client';
       this.client = {
         name: "",
@@ -5404,7 +5405,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }];
     },
     editItem: function editItem(item) {
-      this.dialog = true;
+      this.showForm = true;
       this.title = 'Edit Client';
       this.client = {
         id: item.id,
@@ -5444,17 +5445,51 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
         _this2.items = response;
       });
-      this.dialog = false;
+      this.showForm = false;
       this.text = text;
       this.snackbar = true;
       setTimeout(function () {
         _this2.snackbar = false;
       }, 2000);
     },
-    deleteItem: function deleteItem(item) {} // listClients: async function () {
-    //     const response = await this.$axios.get('/listClients');
-    //     this.items = response.data;
-    // },
+    deleteItem: function deleteItem(item) {
+      this.showDeleteForm = true;
+      this.client = {
+        id: item.id,
+        name: item.name,
+        lastname: item.lastname,
+        dob: item.dob,
+        phone: item.phone,
+        email: item.email,
+        address: item.address
+      };
+    },
+    deleteClient: function () {
+      var _deleteClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var _yield$this$$axios$de, status;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              this.showDeleteForm = false;
+              _context2.next = 3;
+              return this.$axios["delete"]("/deleteClient/".concat(this.client.id));
+            case 3:
+              _yield$this$$axios$de = _context2.sent;
+              status = _yield$this$$axios$de.status;
+              if (status === 200) {
+                this.showAlert('Client deleted successfully');
+              }
+            case 6:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+      function deleteClient() {
+        return _deleteClient.apply(this, arguments);
+      }
+      return deleteClient;
+    }()
   }
 });
 
@@ -5504,21 +5539,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       valid: true,
       menu: false,
-      // payments: [{
-      //     transaction_id: '',
-      //     amount: '',
-      //     date: '',
-      //     menu: false
-      // }],
-
-      // form: {
-      //     name: '',
-      //     lastname: '',
-      //     dob: '',
-      //     phone: '',
-      //     email: '',
-      //     address: ''
-      // },
       nameRules: [function (v) {
         return !!v || 'Name is required';
       }, function (v) {
@@ -5587,7 +5607,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 (0,_api_client_js__WEBPACK_IMPORTED_MODULE_0__.listClients)().then(function (response) {
                   _this.items = response;
                 });
-                this.dialog = false;
+                this.showForm = false;
                 this.text = 'Client and Payments registered successfully';
                 this.snackbar = true;
                 this.$refs.form.reset();
@@ -5617,10 +5637,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
     },
+    removePayment: function removePayment(index) {
+      this.payments.splice(index, 1);
+    },
     editItem: function editItem(item) {
       this.title = 'Edit Client';
       this.form = Object.assign({}, item);
-      this.dialog = true;
+      this.showForm = true;
       this.listClientPayments(item.id);
     },
     updateClient: function () {
@@ -5759,11 +5782,11 @@ var render = function render() {
             }
           }]),
           model: {
-            value: _vm.dialog,
+            value: _vm.showForm,
             callback: function callback($$v) {
-              _vm.dialog = $$v;
+              _vm.showForm = $$v;
             },
-            expression: "dialog"
+            expression: "showForm"
           }
         }, [_vm._v(" "), _c("v-card", [_c("v-card-title", {
           staticClass: "text-h5 grey lighten-2"
@@ -5776,7 +5799,50 @@ var render = function render() {
           on: {
             "client-event": _vm.showAlert
           }
-        })], 1)], 1)], 1)], 1)];
+        })], 1)], 1)], 1), _vm._v(" "), _c("v-dialog", {
+          model: {
+            value: _vm.showDeleteForm,
+            callback: function callback($$v) {
+              _vm.showDeleteForm = $$v;
+            },
+            expression: "showDeleteForm"
+          }
+        }, [_c("v-card", [_c("v-card-title", {
+          staticClass: "text-h5 grey lighten-2"
+        }, [_vm._v("\n                                DELETE CLIENT\n                            ")]), _vm._v(" "), _c("v-card-text", [_c("v-container", {
+          attrs: {
+            fluid: ""
+          }
+        }, [_c("v-row", [_c("v-col", {
+          attrs: {
+            cols: "12"
+          }
+        }, [_c("v-card", [_c("v-card-title", [_c("v-icon", {
+          staticClass: "mr-2",
+          attrs: {
+            color: "red"
+          }
+        }, [_vm._v("mdi-alert-circle")]), _vm._v(" "), _c("span", {
+          staticClass: "headline"
+        }, [_vm._v("Are you sure you want to delete this\n                                                        client?")])], 1), _vm._v(" "), _c("v-card-actions", [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
+          attrs: {
+            color: "blue darken-1",
+            text: ""
+          },
+          on: {
+            click: function click($event) {
+              _vm.showDeleteForm = false;
+            }
+          }
+        }, [_vm._v("\n                                                        Cancel\n                                                    ")]), _vm._v(" "), _c("v-btn", {
+          attrs: {
+            color: "blue darken-1",
+            text: ""
+          },
+          on: {
+            click: _vm.deleteClient
+          }
+        }, [_vm._v("\n                                                        OK\n                                                    ")])], 1)], 1)], 1)], 1)], 1)], 1)], 1)], 1)], 1)];
       },
       proxy: true
     }, {
@@ -5828,7 +5894,11 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("v-container", [_c("h2", {
+  return _c("v-container", {
+    attrs: {
+      "data-app": ""
+    }
+  }, [_c("h2", {
     staticClass: "text-left"
   }, [_vm._v("Personal Information")]), _vm._v(" "), _c("v-form", {
     ref: "form",
@@ -6031,7 +6101,7 @@ var render = function render() {
       sm: "6",
       md: "6"
     }
-  }, [_c("v-btn", {
+  }, [_vm.title !== "Edit Client" ? _c("v-btn", {
     staticClass: "mx-2",
     attrs: {
       fab: "",
@@ -6047,7 +6117,7 @@ var render = function render() {
     attrs: {
       dark: ""
     }
-  }, [_vm._v("\n                            mdi-plus\n                        ")])], 1)], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
+  }, [_vm._v("\n                            mdi-plus\n                        ")])], 1) : _vm._e()], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
     return _c("v-col", {
       key: index,
       attrs: {
@@ -6078,7 +6148,7 @@ var render = function render() {
       attrs: {
         cols: "12",
         sm: "6",
-        md: "4"
+        md: "2"
       }
     }, [_c("v-text-field", {
       attrs: {
@@ -6098,7 +6168,7 @@ var render = function render() {
       attrs: {
         cols: "12",
         sm: "6",
-        md: "4"
+        md: "2"
       }
     }, [_c("v-menu", {
       ref: "payment",
@@ -6180,7 +6250,29 @@ var render = function render() {
           return _vm.$refs.payment[index].save(payment.date);
         }
       }
-    }, [_vm._v("\n                                        OK\n                                    ")])], 1)], 1)], 1)], 1)], 1);
+    }, [_vm._v("\n                                        OK\n                                    ")])], 1)], 1)], 1), _vm._v(" "), index > 0 ? _c("v-col", {
+      attrs: {
+        cols: "12",
+        sm: "6",
+        md: "4"
+      }
+    }, [_vm.title !== "Edit Client" ? _c("v-btn", {
+      staticClass: "mx-2",
+      attrs: {
+        fab: "",
+        dark: "",
+        color: "red"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.removePayment(index);
+        }
+      }
+    }, [_c("v-icon", {
+      attrs: {
+        dark: ""
+      }
+    }, [_vm._v("\n                                    mdi-minus\n                                ")])], 1) : _vm._e()], 1) : _vm._e()], 1)], 1);
   }), _vm._v(" "), _c("v-col", {
     attrs: {
       cols: "12",
@@ -6191,7 +6283,9 @@ var render = function render() {
     staticClass: "mr-4",
     attrs: {
       disabled: !_vm.valid,
-      color: "green"
+      block: "",
+      color: "green",
+      type: "primary"
     },
     on: {
       click: _vm.validate

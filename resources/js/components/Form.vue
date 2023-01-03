@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container data-app>
         <h2 class="text-left">Personal Information</h2>
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-container>
@@ -48,7 +48,7 @@
 
 
                     <v-col cols="6" sm="6" md="6">
-                        <v-btn class="mx-2" @click="addMore()" fab dark color="primary">
+                        <v-btn class="mx-2" @click="addMore()" fab dark color="primary" v-if="title !== 'Edit Client'">
                             <v-icon dark>
                                 mdi-plus
                             </v-icon>
@@ -61,11 +61,11 @@
                                 <v-text-field label="Transaction ID" v-model="payments[index].transaction_id"
                                     type="number" :rules="transactionIdRules"></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4">
+                            <v-col cols="12" sm="6" md="2">
                                 <v-text-field label="Amount" v-model="payment.amount" type="number" prefix="$"
                                     :rules="amountRules"></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4">
+                            <v-col cols="12" sm="6" md="2">
                                 <v-menu ref="payment" v-model="payment.menu" :close-on-content-click="false"
                                     :return-value.sync="payment.date" transition="scale-transition" offset-y
                                     min-width="auto">
@@ -74,7 +74,7 @@
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                             v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="payment.date" no-title scrollable >
+                                    <v-date-picker v-model="payment.date" no-title scrollable>
 
                                         <v-spacer></v-spacer>
                                         <v-btn text color="primary" @click="payment.menu = false">
@@ -86,11 +86,19 @@
                                     </v-date-picker>
                                 </v-menu>
                             </v-col>
+                            <v-col cols="12" sm="6" md="4" v-if="index > 0">
+                                <v-btn class="mx-2" @click="removePayment(index)" fab dark color="red"
+                                    v-if="title !== 'Edit Client'">
+                                    <v-icon dark>
+                                        mdi-minus
+                                    </v-icon>
+                                </v-btn>
+                            </v-col>
                         </v-row>
                     </v-col>
 
                     <v-col cols="12" sm="12" md="12">
-                        <v-btn :disabled="!valid" color="green" class="mr-4" v-if="title !== 'Edit Client'"
+                        <v-btn :disabled="!valid" block color="green" type="primary" class="mr-4" v-if="title !== 'Edit Client'"
                             @click="validate">
                             Save
                         </v-btn>
@@ -135,21 +143,6 @@ export default {
         return {
             valid: true,
             menu: false,
-            // payments: [{
-            //     transaction_id: '',
-            //     amount: '',
-            //     date: '',
-            //     menu: false
-            // }],
-
-            // form: {
-            //     name: '',
-            //     lastname: '',
-            //     dob: '',
-            //     phone: '',
-            //     email: '',
-            //     address: ''
-            // },
             nameRules: [
                 v => !!v || 'Name is required',
                 v => (v && v.length <= 20) || 'Name must be less than 20 characters'
@@ -204,7 +197,7 @@ export default {
                 listClients().then((response) => {
                     this.items = response;
                 });
-                this.dialog = false;
+                this.showForm = false;
                 this.text = 'Client and Payments registered successfully';
                 this.snackbar = true;
                 this.$refs.form.reset()
@@ -226,16 +219,18 @@ export default {
             }
         },
 
+        removePayment: function (index) {
+            this.payments.splice(index, 1);
+        },
+
 
         editItem(item) {
             this.title = 'Edit Client';
             this.form = Object.assign({}, item);
-            this.dialog = true;
+            this.showForm = true;
             this.listClientPayments(item.id);
 
         },
-
-
 
         updateClient: async function () {
             let form = {
