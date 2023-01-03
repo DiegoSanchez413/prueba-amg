@@ -5386,7 +5386,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     });
   },
   methods: {
-    showDialog: function showDialog() {
+    showAddDialog: function showAddDialog() {
       this.showForm = true;
       this.title = 'Add Client';
       this.client = {
@@ -5404,7 +5404,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         menu: false
       }];
     },
-    editItem: function editItem(item) {
+    showEditDialog: function showEditDialog(item) {
       this.showForm = true;
       this.title = 'Edit Client';
       this.client = {
@@ -5417,6 +5417,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         address: item.address
       };
       this.listClientPayments(item.id);
+    },
+    showDeleteDialog: function showDeleteDialog(item) {
+      this.showDeleteForm = true;
+      this.client = {
+        id: item.id,
+        name: item.name,
+        lastname: item.lastname,
+        dob: item.dob,
+        phone: item.phone,
+        email: item.email,
+        address: item.address
+      };
+    },
+    showAlert: function showAlert(text) {
+      var _this2 = this;
+      (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
+        _this2.items = response;
+      });
+      this.showForm = false;
+      this.text = text;
+      this.snackbar = true;
+      setTimeout(function () {
+        _this2.snackbar = false;
+      }, 2000);
     },
     listClientPayments: function () {
       var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
@@ -5440,30 +5464,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       return listClientPayments;
     }(),
-    showAlert: function showAlert(text) {
-      var _this2 = this;
-      (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
-        _this2.items = response;
-      });
-      this.showForm = false;
-      this.text = text;
-      this.snackbar = true;
-      setTimeout(function () {
-        _this2.snackbar = false;
-      }, 2000);
-    },
-    deleteItem: function deleteItem(item) {
-      this.showDeleteForm = true;
-      this.client = {
-        id: item.id,
-        name: item.name,
-        lastname: item.lastname,
-        dob: item.dob,
-        phone: item.phone,
-        email: item.email,
-        address: item.address
-      };
-    },
     deleteClient: function () {
       var _deleteClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var _yield$this$$axios$de, status;
@@ -5583,8 +5583,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.addClient();
       }
     },
-    editClient: function editClient() {
-      alert('edit');
+    addInput: function addInput() {
+      if (this.payments.length < 5) {
+        this.payments.push({
+          transaction_id: "",
+          amount: "",
+          date: "",
+          menu: false
+        });
+      }
+    },
+    removeInput: function removeInput(index) {
+      this.payments.splice(index, 1);
     },
     addClient: function () {
       var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -5627,25 +5637,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       return addClient;
     }(),
-    addMore: function addMore() {
-      if (this.payments.length < 5) {
-        this.payments.push({
-          transaction_id: "",
-          amount: "",
-          date: "",
-          menu: false
-        });
-      }
-    },
-    removePayment: function removePayment(index) {
-      this.payments.splice(index, 1);
-    },
-    editItem: function editItem(item) {
-      this.title = 'Edit Client';
-      this.form = Object.assign({}, item);
-      this.showForm = true;
-      this.listClientPayments(item.id);
-    },
     updateClient: function () {
       var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var _this2 = this;
@@ -5776,7 +5767,7 @@ var render = function render() {
                   dark: ""
                 },
                 on: {
-                  click: _vm.showDialog
+                  click: _vm.showAddDialog
                 }
               }, "v-btn", attrs, false), on), [_vm._v("\n                                ADD CLIENT\n                            ")])];
             }
@@ -5856,7 +5847,7 @@ var render = function render() {
           },
           on: {
             click: function click($event) {
-              return _vm.editItem(item);
+              return _vm.showEditDialog(item);
             }
           }
         }, [_vm._v("\n                    mdi-pencil\n                ")]), _vm._v(" "), _c("v-icon", {
@@ -5865,7 +5856,7 @@ var render = function render() {
           },
           on: {
             click: function click($event) {
-              return _vm.deleteItem(item);
+              return _vm.showDeleteDialog(item);
             }
           }
         }, [_vm._v("\n                    mdi-delete\n                ")])];
@@ -6110,7 +6101,7 @@ var render = function render() {
     },
     on: {
       click: function click($event) {
-        return _vm.addMore();
+        return _vm.addInput();
       }
     }
   }, [_c("v-icon", {
@@ -6265,7 +6256,7 @@ var render = function render() {
       },
       on: {
         click: function click($event) {
-          return _vm.removePayment(index);
+          return _vm.removeInput(index);
         }
       }
     }, [_c("v-icon", {

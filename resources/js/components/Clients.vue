@@ -28,7 +28,7 @@
 
                         <v-dialog v-model="showForm">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn color="success" dark v-bind="attrs" v-on="on" @click="showDialog">
+                                <v-btn color="success" dark v-bind="attrs" v-on="on" @click="showAddDialog">
                                     ADD CLIENT
                                 </v-btn>
                             </template>
@@ -84,10 +84,10 @@
                 </template>
 
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-2" @click="editItem(item)">
+                    <v-icon small class="mr-2" @click="showEditDialog(item)">
                         mdi-pencil
                     </v-icon>
-                    <v-icon small @click="deleteItem(item)">
+                    <v-icon small @click="showDeleteDialog(item)">
                         mdi-delete
                     </v-icon>
                 </template>
@@ -146,7 +146,7 @@ export default {
         });
     },
     methods: {
-        showDialog() {
+        showAddDialog() {
             this.showForm = true;
             this.title = 'Add Client';
             this.client = {
@@ -164,8 +164,7 @@ export default {
                 menu: false
             }];
         },
-
-        editItem(item) {
+        showEditDialog(item) {
             this.showForm = true;
             this.title = 'Edit Client';
             this.client = {
@@ -179,12 +178,18 @@ export default {
             };
             this.listClientPayments(item.id);
         },
-
-        listClientPayments: async function (id) {
-            const response = await this.$axios.get(`/listClientPayments/${id}`);
-            this.payments = response.data;
+        showDeleteDialog(item) {
+            this.showDeleteForm = true;
+            this.client = {
+                id: item.id,
+                name: item.name,
+                lastname: item.lastname,
+                dob: item.dob,
+                phone: item.phone,
+                email: item.email,
+                address: item.address,
+            };
         },
-
         showAlert(text) {
             listClients().then((response) => {
                 this.items = response;
@@ -196,17 +201,9 @@ export default {
                 this.snackbar = false
             }, 2000)
         },
-        deleteItem(item) {
-            this.showDeleteForm = true;
-            this.client = {
-                id: item.id,
-                name: item.name,
-                lastname: item.lastname,
-                dob: item.dob,
-                phone: item.phone,
-                email: item.email,
-                address: item.address,
-            };
+        listClientPayments: async function (id) {
+            const response = await this.$axios.get(`/listClientPayments/${id}`);
+            this.payments = response.data;
         },
         deleteClient: async function () {
             this.showDeleteForm = false;

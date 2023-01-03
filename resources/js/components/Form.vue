@@ -48,7 +48,7 @@
 
 
                     <v-col cols="6" sm="6" md="6">
-                        <v-btn class="mx-2" @click="addMore()" fab dark color="primary" v-if="title !== 'Edit Client'">
+                        <v-btn class="mx-2" @click="addInput()" fab dark color="primary" v-if="title !== 'Edit Client'">
                             <v-icon dark>
                                 mdi-plus
                             </v-icon>
@@ -87,7 +87,7 @@
                                 </v-menu>
                             </v-col>
                             <v-col cols="12" sm="6" md="4" v-if="index > 0">
-                                <v-btn class="mx-2" @click="removePayment(index)" fab dark color="red"
+                                <v-btn class="mx-2" @click="removeInput(index)" fab dark color="red"
                                     v-if="title !== 'Edit Client'">
                                     <v-icon dark>
                                         mdi-minus
@@ -98,8 +98,8 @@
                     </v-col>
 
                     <v-col cols="12" sm="12" md="12">
-                        <v-btn :disabled="!valid" block color="green" type="primary" class="mr-4" v-if="title !== 'Edit Client'"
-                            @click="validate">
+                        <v-btn :disabled="!valid" block color="green" type="primary" class="mr-4"
+                            v-if="title !== 'Edit Client'" @click="validate">
                             Save
                         </v-btn>
 
@@ -135,9 +135,7 @@ export default {
                     date: '',
                     menu: false
                 }],
-
         }
-
     },
     data() {
         return {
@@ -183,10 +181,19 @@ export default {
                 this.addClient();
             }
         },
-        editClient() {
-            alert('edit')
+        addInput: function () {
+            if (this.payments.length < 5) {
+                this.payments.push({
+                    transaction_id: "",
+                    amount: "",
+                    date: "",
+                    menu: false,
+                });
+            }
         },
-
+        removeInput: function (index) {
+            this.payments.splice(index, 1);
+        },
         addClient: async function () {
             let form = {
                 client: this.client,
@@ -207,31 +214,6 @@ export default {
                 this.$emit('client-event', 'Client registered successfully');
             }
         },
-
-        addMore: function () {
-            if (this.payments.length < 5) {
-                this.payments.push({
-                    transaction_id: "",
-                    amount: "",
-                    date: "",
-                    menu: false,
-                });
-            }
-        },
-
-        removePayment: function (index) {
-            this.payments.splice(index, 1);
-        },
-
-
-        editItem(item) {
-            this.title = 'Edit Client';
-            this.form = Object.assign({}, item);
-            this.showForm = true;
-            this.listClientPayments(item.id);
-
-        },
-
         updateClient: async function () {
             let form = {
                 client: this.client,
