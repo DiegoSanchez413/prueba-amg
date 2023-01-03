@@ -19,7 +19,6 @@
                     <span>$ {{ item.total ?? 0 }} </span>
                 </template>
 
-
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>Clients</v-toolbar-title>
@@ -59,8 +58,8 @@
                                                 <v-card>
                                                     <v-card-title>
                                                         <v-icon class="mr-2" color="red">mdi-alert-circle</v-icon>
-                                                        <span class="headline">Are you sure you want to delete this
-                                                            client?</span>
+                                                        <span class="headline"> Are you sure you want to delete this
+                                                            client? This will be delete all payments</span>
                                                     </v-card-title>
                                                     <v-card-actions>
                                                         <v-spacer></v-spacer>

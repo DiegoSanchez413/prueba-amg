@@ -23,7 +23,7 @@ class CreatePaymentsTable extends Migration
             $table->timestamps();
         });
 
-        $addPayment="CREATE PROCEDURE addPayment(IN transactionId VARCHAR(255), IN clientId INT, IN amount INT, IN date DATE) BEGIN INSERT INTO payments (transaction_id, client_id, amount, date) VALUES (transactionId, clientId, amount, date); END";
+        $addPayment = "CREATE PROCEDURE addPayment(IN transactionId VARCHAR(255), IN clientId INT, IN amount INT, IN date DATE) BEGIN INSERT INTO payments (transaction_id, client_id, amount, date) VALUES (transactionId, clientId, amount, date); END";
         DB::unprepared($addPayment);
         $removePayment = "CREATE PROCEDURE removePayment(IN id INT) BEGIN DELETE FROM payments WHERE id = id; END";
         DB::unprepared($removePayment);

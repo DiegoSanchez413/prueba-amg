@@ -5834,7 +5834,7 @@ var render = function render() {
           }
         }, [_vm._v("mdi-alert-circle")]), _vm._v(" "), _c("span", {
           staticClass: "headline"
-        }, [_vm._v("Are you sure you want to delete this\n                                                        client?")])], 1), _vm._v(" "), _c("v-card-actions", [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
+        }, [_vm._v(" Are you sure you want to delete this\n                                                        client? This will be delete all payments")])], 1), _vm._v(" "), _c("v-card-actions", [_c("v-spacer"), _vm._v(" "), _c("v-btn", {
           attrs: {
             color: "blue darken-1",
             text: ""

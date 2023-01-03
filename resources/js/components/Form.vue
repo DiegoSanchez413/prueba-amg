@@ -46,9 +46,7 @@
 
                     </v-col>
 
-
                     <v-col cols="6" sm="6" md="6">
-                        <!-- v-if="title !== 'Edit Client'" -->
                         <v-btn class="mx-2" @click="addInput()" fab dark color="primary">
                             <v-icon dark>
                                 mdi-plus
@@ -197,7 +195,7 @@ export default {
             const formmat = eighteenYearsAgo.toISOString().split('T')[0];
             this.maxDate = formmat;
         },
-        
+
         addInput: function () {
             if (this.payments.length === 5) {
                 this.$emit('client-event', 'You can only add 5 payments');
