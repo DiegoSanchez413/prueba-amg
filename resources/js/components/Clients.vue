@@ -10,7 +10,7 @@
                 </template>
             </v-snackbar>
 
-            <v-data-table :headers="headers" :items="items" :items-per-page="5" class="elevation-1">
+            <v-data-table :headers="headers" :items="items" :items-per-page="10" class="elevation-1">
                 <template v-slot:item.name="{ item }">
                     <span>{{ item.name }} {{ item.lastname }}</span>
                 </template>
@@ -99,6 +99,7 @@
 import Form from './Form.vue';
 import { formatCurrency, formatDate } from '../helpers/helpers.js';
 import { listClients } from '../api/client.js';
+
 export default {
     data() {
         return {
@@ -191,15 +192,17 @@ export default {
             };
         },
         showAlert(text) {
-            listClients().then((response) => {
-                this.items = response;
-            });
-            this.showForm = false;
             this.text = text;
             this.snackbar = true;
+            if (text !== 'You can only add 5 payments') {
+                listClients().then((response) => {
+                    this.items = response;
+                });
+                this.showForm = false;
+            }
             setTimeout(() => {
                 this.snackbar = false
-            }, 2000)
+            }, 3000)
         },
         listClientPayments: async function (id) {
             const response = await this.$axios.get(`/listClientPayments/${id}`);

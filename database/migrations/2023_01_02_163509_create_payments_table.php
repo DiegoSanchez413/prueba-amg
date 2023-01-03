@@ -33,6 +33,9 @@ class CreatePaymentsTable extends Migration
 
         $updatePayment = "CREATE PROCEDURE updatePayment(IN sp_id INT, IN transactionId VARCHAR(255), IN clientId INT, IN amount INT, IN date DATE) BEGIN UPDATE payments SET transaction_id = transactionId, client_id = clientId, amount = amount, date = date WHERE id = sp_id; END";
         DB::unprepared($updatePayment);
+
+        $getPaymentCountsOfClient = "CREATE PROCEDURE getPaymentCountsOfClient(IN id INT) BEGIN SELECT COUNT(payments.id) AS quantity FROM payments WHERE client_id = id; END";
+        DB::unprepared($getPaymentCountsOfClient);
     }
 
     /**

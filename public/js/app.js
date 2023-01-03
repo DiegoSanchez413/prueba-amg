@@ -5432,15 +5432,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     showAlert: function showAlert(text) {
       var _this2 = this;
-      (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
-        _this2.items = response;
-      });
-      this.showForm = false;
       this.text = text;
       this.snackbar = true;
+      if (text !== 'You can only add 5 payments') {
+        (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
+          _this2.items = response;
+        });
+        this.showForm = false;
+      }
       setTimeout(function () {
         _this2.snackbar = false;
-      }, 2000);
+      }, 3000);
     },
     listClientPayments: function () {
       var _listClientPayments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
@@ -5537,6 +5539,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      maxDate: '',
+      today: new Date().toISOString().substr(0, 10),
       valid: true,
       menu: false,
       nameRules: [function (v) {
@@ -5576,6 +5580,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]
     };
   },
+  mounted: function mounted() {
+    this.setMaxDate();
+  },
   methods: {
     validate: function validate() {
       var clientValid = this.$refs.form.validate();
@@ -5583,7 +5590,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.addClient();
       }
     },
+    setMaxDate: function setMaxDate() {
+      var today = new Date();
+      var year = today.getFullYear();
+      var month = today.getMonth();
+      var day = today.getDate();
+      var eighteenYearsAgo = new Date(year - 18, month, day);
+      var formmat = eighteenYearsAgo.toISOString().split('T')[0];
+      this.maxDate = formmat;
+    },
     addInput: function addInput() {
+      if (this.payments.length === 5) {
+        this.$emit('client-event', 'You can only add 5 payments');
+      }
       if (this.payments.length < 5) {
         this.payments.push({
           transaction_id: "",
@@ -5727,7 +5746,7 @@ var render = function render() {
     attrs: {
       headers: _vm.headers,
       items: _vm.items,
-      "items-per-page": 5
+      "items-per-page": 10
     },
     scopedSlots: _vm._u([{
       key: "item.name",
@@ -5995,7 +6014,8 @@ var render = function render() {
   }, [_vm._v(" "), _c("v-date-picker", {
     attrs: {
       "no-title": "",
-      scrollable: ""
+      scrollable: "",
+      max: _vm.maxDate
     },
     model: {
       value: _vm.client.dob,
@@ -6092,7 +6112,7 @@ var render = function render() {
       sm: "6",
       md: "6"
     }
-  }, [_vm.title !== "Edit Client" ? _c("v-btn", {
+  }, [_c("v-btn", {
     staticClass: "mx-2",
     attrs: {
       fab: "",
@@ -6108,7 +6128,7 @@ var render = function render() {
     attrs: {
       dark: ""
     }
-  }, [_vm._v("\n                            mdi-plus\n                        ")])], 1) : _vm._e()], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
+  }, [_vm._v("\n                            mdi-plus\n                        ")])], 1)], 1), _vm._v(" "), _vm._l(_vm.payments, function (payment, index) {
     return _c("v-col", {
       key: index,
       attrs: {
@@ -6189,6 +6209,7 @@ var render = function render() {
               type: "date",
               label: "Date",
               rules: _vm.dateRules,
+              max: _vm.maxDate,
               "prepend-icon": "mdi-calendar",
               readonly: ""
             },
@@ -6212,7 +6233,8 @@ var render = function render() {
     }, [_vm._v(" "), _c("v-date-picker", {
       attrs: {
         "no-title": "",
-        scrollable: ""
+        scrollable: "",
+        max: _vm.today
       },
       model: {
         value: payment.date,

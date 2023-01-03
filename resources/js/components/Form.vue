@@ -17,7 +17,7 @@
                                 <v-text-field v-model="client.dob" label="DOB" type="date" :rules="dobRules"
                                     prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="client.dob" no-title scrollable>
+                            <v-date-picker v-model="client.dob" no-title scrollable :max="maxDate">
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">
                                     Cancel
@@ -48,7 +48,8 @@
 
 
                     <v-col cols="6" sm="6" md="6">
-                        <v-btn class="mx-2" @click="addInput()" fab dark color="primary" v-if="title !== 'Edit Client'">
+                        <!-- v-if="title !== 'Edit Client'" -->
+                        <v-btn class="mx-2" @click="addInput()" fab dark color="primary">
                             <v-icon dark>
                                 mdi-plus
                             </v-icon>
@@ -71,10 +72,10 @@
                                     min-width="auto">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field v-model="payment.date" type="date" label="Date" :rules="dateRules"
-                                            prepend-icon="mdi-calendar" readonly v-bind="attrs"
+                                            :max="maxDate" prepend-icon="mdi-calendar" readonly v-bind="attrs"
                                             v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="payment.date" no-title scrollable>
+                                    <v-date-picker v-model="payment.date" no-title scrollable :max="today">
 
                                         <v-spacer></v-spacer>
                                         <v-btn text color="primary" @click="payment.menu = false">
@@ -139,6 +140,8 @@ export default {
     },
     data() {
         return {
+            maxDate: '',
+            today: new Date().toISOString().substr(0, 10),
             valid: true,
             menu: false,
             nameRules: [
@@ -150,7 +153,8 @@ export default {
                 v => (v && v.length <= 20) || 'Last Name must be less than 20 characters'
             ],
             dobRules: [
-                v => !!v || 'DOB is required'
+                v => !!v || 'DOB is required',
+
             ],
             phoneRules: [
                 v => !!v || 'Phone is required',
@@ -171,8 +175,11 @@ export default {
             ],
             dateRules: [
                 v => !!v || 'Date is required'
-            ]
+            ],
         }
+    },
+    mounted() {
+        this.setMaxDate();
     },
     methods: {
         validate() {
@@ -181,7 +188,21 @@ export default {
                 this.addClient();
             }
         },
+        setMaxDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const day = today.getDate();
+            const eighteenYearsAgo = new Date(year - 18, month, day);
+            const formmat = eighteenYearsAgo.toISOString().split('T')[0];
+            this.maxDate = formmat;
+        },
+        
         addInput: function () {
+            if (this.payments.length === 5) {
+                this.$emit('client-event', 'You can only add 5 payments');
+            }
+
             if (this.payments.length < 5) {
                 this.payments.push({
                     transaction_id: "",
