@@ -298,7 +298,12 @@ export default {
             this.title = 'Edit Client';
             this.form = Object.assign({}, item);
             this.dialog = true;
+            this.listClientPayments(item.id);
 
+        },
+        listClientPayments: async function (id){
+            const response = await this.$axios.get(`/listClientPayments/${id}`);
+            this.payments = response.data;
         },
         deleteItem(item) {
 

@@ -20,4 +20,12 @@ class PaymentController extends Controller
         }
         return response()->json($result, 200);
     }
+
+    public function getClientPayments($id)
+    {
+        $result = DB::select('call getPaymentsById(?)', [$id]);
+        return response()->json($result, 200);
+    }
+
+    
 }

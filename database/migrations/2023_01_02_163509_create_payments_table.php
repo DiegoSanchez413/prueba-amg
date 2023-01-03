@@ -28,6 +28,8 @@ class CreatePaymentsTable extends Migration
         $removePayment = "CREATE PROCEDURE removePayment(IN id INT) BEGIN DELETE FROM payments WHERE id = id; END";
         DB::unprepared($removePayment);
 
+        $getPaymentsById = "CREATE PROCEDURE getPaymentsById(IN id INT) BEGIN SELECT payments.id, payments.transaction_id, payments.client_id, payments.amount, payments.date FROM payments WHERE client_id = id; END";
+        DB::unprepared($getPaymentsById);
     }
 
     /**
