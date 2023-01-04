@@ -14,10 +14,10 @@
                         <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
                             :return-value.sync="client.dob" transition="scale-transition" offset-y min-width="auto">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-text-field v-model="client.dob" label="DOB" type="date" :rules="dobRules"
+                                <v-text-field v-model="client.dob" label="Date" type="date" :rules="dobRules"
                                     prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                             </template>
-                            <v-date-picker v-model="client.dob" no-title scrollable :max="maxDate">
+                            <v-date-picker v-model="client.dob" no-title scrollable :max="maxDate" label="date">
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">
                                     Cancel
@@ -177,7 +177,7 @@ export default {
         }
     },
     mounted() {
-        this.setMaxDate();
+        // this.setMaxDate();
     },
     methods: {
         validate() {
@@ -186,15 +186,15 @@ export default {
                 this.addClient();
             }
         },
-        setMaxDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth();
-            const day = today.getDate();
-            const eighteenYearsAgo = new Date(year - 18, month, day);
-            const formmat = eighteenYearsAgo.toISOString().split('T')[0];
-            this.maxDate = formmat;
-        },
+        // setMaxDate() {
+        //     const today = new Date();
+        //     const year = today.getFullYear();
+        //     const month = today.getMonth();
+        //     const day = today.getDate();
+        //     const eighteenYearsAgo = new Date(year - 18, month, day);
+        //     const formmat = eighteenYearsAgo.toISOString().split('T')[0];
+        //     this.maxDate = formmat;
+        // },
 
         addInput: function () {
             if (this.payments.length === 5) {
@@ -219,7 +219,7 @@ export default {
                 payments: this.payments
             }
             const { data, status } = await this.$axios.post('/api/addClient', form);
-            if (status === 200 && data[0].success) {
+            if (status === 200 && data.success) {
                 listClients().then((response) => {
                     this.items = response;
                 });

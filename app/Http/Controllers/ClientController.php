@@ -19,6 +19,7 @@ class ClientController extends Controller
         $payments = $request->input('payments');
         $array = array($client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address'], json_encode($payments));
         DB::select('call addClient(?, ?, ?, ?, ?, ?, ?)', $array);
+        return response()->json(['success' => true], 200);
     }
 
     public function update(Request $request)

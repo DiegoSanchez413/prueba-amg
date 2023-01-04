@@ -5326,6 +5326,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      loading: true,
+      search: '',
       title: 'Add Client',
       formatCurrency: _helpers_helpers_js__WEBPACK_IMPORTED_MODULE_1__.formatCurrency,
       formatDate: _helpers_helpers_js__WEBPACK_IMPORTED_MODULE_1__.formatDate,
@@ -5383,9 +5385,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _this = this;
     (0,_api_client_js__WEBPACK_IMPORTED_MODULE_2__.listClients)().then(function (response) {
       _this.items = response;
+      _this.loading = false;
     });
   },
   methods: {
+    getColor: function getColor(quantity) {
+      if (quantity > 3) {
+        return 'green';
+      } else if (quantity > 1) {
+        return 'orange';
+      } else {
+        return 'red';
+      }
+    },
     showAddDialog: function showAddDialog() {
       this.showForm = true;
       this.title = 'Add Client';
@@ -5581,7 +5593,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   mounted: function mounted() {
-    this.setMaxDate();
+    // this.setMaxDate();
   },
   methods: {
     validate: function validate() {
@@ -5590,15 +5602,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.addClient();
       }
     },
-    setMaxDate: function setMaxDate() {
-      var today = new Date();
-      var year = today.getFullYear();
-      var month = today.getMonth();
-      var day = today.getDate();
-      var eighteenYearsAgo = new Date(year - 18, month, day);
-      var formmat = eighteenYearsAgo.toISOString().split('T')[0];
-      this.maxDate = formmat;
-    },
+    // setMaxDate() {
+    //     const today = new Date();
+    //     const year = today.getFullYear();
+    //     const month = today.getMonth();
+    //     const day = today.getDate();
+    //     const eighteenYearsAgo = new Date(year - 18, month, day);
+    //     const formmat = eighteenYearsAgo.toISOString().split('T')[0];
+    //     this.maxDate = formmat;
+    // },
+
     addInput: function addInput() {
       if (this.payments.length === 5) {
         this.$emit('client-event', 'You can only add 5 payments');
@@ -5632,7 +5645,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _yield$this$$axios$po = _context.sent;
               data = _yield$this$$axios$po.data;
               status = _yield$this$$axios$po.status;
-              if (status === 200 && data[0].success) {
+              if (status === 200 && data.success) {
                 (0,_api_client_js__WEBPACK_IMPORTED_MODULE_0__.listClients)().then(function (response) {
                   _this.items = response;
                 });
@@ -5741,12 +5754,29 @@ var render = function render() {
       },
       expression: "snackbar"
     }
-  }, [_vm._v("\n            " + _vm._s(_vm.text) + "\n            ")]), _vm._v(" "), _c("v-data-table", {
+  }, [_vm._v("\n            " + _vm._s(_vm.text) + "\n            ")]), _vm._v(" "), _c("v-card-title", [_vm._v("\n            Search Clients\n            "), _c("v-spacer"), _vm._v(" "), _c("v-text-field", {
+    attrs: {
+      "append-icon": "mdi-magnify",
+      label: "Search",
+      "single-line": "",
+      "hide-details": ""
+    },
+    model: {
+      value: _vm.search,
+      callback: function callback($$v) {
+        _vm.search = $$v;
+      },
+      expression: "search"
+    }
+  })], 1), _vm._v(" "), _c("v-data-table", {
     staticClass: "elevation-1",
     attrs: {
       headers: _vm.headers,
+      search: _vm.search,
       items: _vm.items,
-      "items-per-page": 10
+      "items-per-page": 10,
+      loading: _vm.loading,
+      "loading-text": "Loading clients... Please wait"
     },
     scopedSlots: _vm._u([{
       key: "item.name",
@@ -5755,10 +5785,22 @@ var render = function render() {
         return [_c("span", [_vm._v(_vm._s(item.name) + " " + _vm._s(item.lastname))])];
       }
     }, {
-      key: "item.total",
+      key: "item.quantity",
       fn: function fn(_ref3) {
-        var _item$total;
+        var _item$quantity;
         var item = _ref3.item;
+        return [_c("v-chip", {
+          attrs: {
+            color: _vm.getColor(item.quantity),
+            dark: ""
+          }
+        }, [_vm._v("\n                    $ " + _vm._s((_item$quantity = item.quantity) !== null && _item$quantity !== void 0 ? _item$quantity : 0) + "\n                ")])];
+      }
+    }, {
+      key: "item.total",
+      fn: function fn(_ref4) {
+        var _item$total;
+        var item = _ref4.item;
         return [_c("span", [_vm._v("$ " + _vm._s((_item$total = item.total) !== null && _item$total !== void 0 ? _item$total : 0) + " ")])];
       }
     }, {
@@ -5777,9 +5819,9 @@ var render = function render() {
         }), _vm._v(" "), _c("v-spacer"), _vm._v(" "), _c("v-dialog", {
           scopedSlots: _vm._u([{
             key: "activator",
-            fn: function fn(_ref4) {
-              var on = _ref4.on,
-                attrs = _ref4.attrs;
+            fn: function fn(_ref5) {
+              var on = _ref5.on,
+                attrs = _ref5.attrs;
               return [_c("v-btn", _vm._g(_vm._b({
                 attrs: {
                   color: "success",
@@ -5857,8 +5899,8 @@ var render = function render() {
       proxy: true
     }, {
       key: "item.actions",
-      fn: function fn(_ref5) {
-        var item = _ref5.item;
+      fn: function fn(_ref6) {
+        var item = _ref6.item;
         return [_c("v-icon", {
           staticClass: "mr-2",
           attrs: {
@@ -5988,7 +6030,7 @@ var render = function render() {
           attrs = _ref.attrs;
         return [_c("v-text-field", _vm._g(_vm._b({
           attrs: {
-            label: "DOB",
+            label: "Date",
             type: "date",
             rules: _vm.dobRules,
             "prepend-icon": "mdi-calendar",
@@ -6015,7 +6057,8 @@ var render = function render() {
     attrs: {
       "no-title": "",
       scrollable: "",
-      max: _vm.maxDate
+      max: _vm.maxDate,
+      label: "date"
     },
     model: {
       value: _vm.client.dob,

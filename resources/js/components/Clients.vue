@@ -10,10 +10,26 @@
                 </template>
             </v-snackbar>
 
-            <v-data-table :headers="headers" :items="items" :items-per-page="10" class="elevation-1">
+            <v-card-title>
+                Search Clients
+                <v-spacer></v-spacer>
+                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
+                    hide-details></v-text-field>
+            </v-card-title>
+
+
+            <v-data-table :headers="headers" :search="search" :items="items" :items-per-page="10" class="elevation-1"
+                :loading="loading" loading-text="Loading clients... Please wait">
                 <template v-slot:item.name="{ item }">
                     <span>{{ item.name }} {{ item.lastname }}</span>
                 </template>
+
+                <template v-slot:item.quantity="{ item }">
+                    <v-chip :color="getColor(item.quantity)" dark>
+                        $ {{ item.quantity ?? 0 }}
+                    </v-chip>
+                </template>
+
 
                 <template v-slot:item.total="{ item }">
                     <span>$ {{ item.total ?? 0 }} </span>
@@ -102,6 +118,8 @@ import { listClients } from '../api/client.js';
 export default {
     data() {
         return {
+            loading: true,
+            search: '',
             title: 'Add Client',
             formatCurrency: formatCurrency,
             formatDate: formatDate,
@@ -143,9 +161,19 @@ export default {
     mounted() {
         listClients().then((response) => {
             this.items = response;
+            this.loading = false;
         });
     },
     methods: {
+        getColor(quantity) {
+            if (quantity > 3) {
+                return 'green';
+            } else if (quantity > 1) {
+                return 'orange';
+            } else {
+                return 'red';
+            }
+        },
         showAddDialog() {
             this.showForm = true;
             this.title = 'Add Client';
