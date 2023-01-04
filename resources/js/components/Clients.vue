@@ -204,12 +204,12 @@ export default {
             }, 3000)
         },
         listClientPayments: async function (id) {
-            const response = await this.$axios.get(`/listClientPayments/${id}`);
+            const response = await this.$axios.get(`/api/listClientPayments/${id}`);
             this.payments = response.data;
         },
         deleteClient: async function () {
             this.showDeleteForm = false;
-            const { status } = await this.$axios.delete(`/deleteClient/${this.client.id}`);
+            const { status } = await this.$axios.delete(`/api/deleteClient/${this.client.id}`);
             if (status === 200) {
                 this.showAlert('Client deleted successfully');
             }

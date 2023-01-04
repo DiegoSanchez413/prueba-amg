@@ -5451,7 +5451,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return this.$axios.get("/listClientPayments/".concat(id));
+              return this.$axios.get("/api/listClientPayments/".concat(id));
             case 2:
               response = _context.sent;
               this.payments = response.data;
@@ -5474,7 +5474,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               this.showDeleteForm = false;
               _context2.next = 3;
-              return this.$axios["delete"]("/deleteClient/".concat(this.client.id));
+              return this.$axios["delete"]("/api/deleteClient/".concat(this.client.id));
             case 3:
               _yield$this$$axios$de = _context2.sent;
               status = _yield$this$$axios$de.status;
@@ -5627,7 +5627,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 payments: this.payments
               };
               _context.next = 3;
-              return this.$axios.post('/addClient', form);
+              return this.$axios.post('/api/addClient', form);
             case 3:
               _yield$this$$axios$po = _context.sent;
               data = _yield$this$$axios$po.data;
@@ -5668,7 +5668,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 payments: this.payments
               };
               _context2.next = 3;
-              return this.$axios.put('/updateClient', form);
+              return this.$axios.put('/api/updateClient', form);
             case 3:
               _yield$this$$axios$pu = _context2.sent;
               status = _yield$this$$axios$pu.status;
@@ -6301,7 +6301,10 @@ var render = function render() {
       type: "primary"
     },
     on: {
-      click: _vm.validate
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.validate.apply(null, arguments);
+      }
     }
   }, [_vm._v("\n                        Save\n                    ")]) : _c("v-btn", {
     staticClass: "mr-4",
@@ -6345,7 +6348,7 @@ var listClients = /*#__PURE__*/function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return axios__WEBPACK_IMPORTED_MODULE_0___default().get('/listClients');
+          return axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/listClients');
         case 2:
           response = _context.sent;
           return _context.abrupt("return", response.data);

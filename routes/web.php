@@ -16,10 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::post('/addClient', 'App\Http\Controllers\ClientController@store');
-Route::get('/listClients', 'App\Http\Controllers\ClientController@list');
-Route::put('/updateClient', 'App\Http\Controllers\ClientController@update');
-Route::post('/addPayment', 'App\Http\Controllers\PaymentController@store');
-Route::get('/listClientPayments/{id}', 'App\Http\Controllers\PaymentController@getClientPayments');
-Route::delete('/deleteClient/{id}', 'App\Http\Controllers\ClientController@delete');

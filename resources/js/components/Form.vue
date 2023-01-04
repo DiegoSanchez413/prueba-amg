@@ -98,7 +98,7 @@
 
                     <v-col cols="12" sm="12" md="12">
                         <v-btn :disabled="!valid" block color="green" type="primary" class="mr-4"
-                            v-if="title !== 'Edit Client'" @click="validate">
+                            v-if="title !== 'Edit Client'" @click.prevent="validate">
                             Save
                         </v-btn>
 
@@ -218,7 +218,7 @@ export default {
                 client: this.client,
                 payments: this.payments
             }
-            const { data, status } = await this.$axios.post('/addClient', form);
+            const { data, status } = await this.$axios.post('/api/addClient', form);
             if (status === 200 && data[0].success) {
                 listClients().then((response) => {
                     this.items = response;
@@ -238,7 +238,7 @@ export default {
                 client: this.client,
                 payments: this.payments
             }
-            const { status } = await this.$axios.put('/updateClient', form);
+            const { status } = await this.$axios.put('/api/updateClient', form);
             if (status === 200) {
                 listClients().then((response) => {
                     this.items = response;

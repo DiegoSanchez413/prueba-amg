@@ -16,62 +16,48 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $client = $request->input('client');
-        $array = array($client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address']);
-        $result = DB::select('call addClient(?, ?, ?, ?, ?, ?)', $array);
-        $status = $result[0]->success;
-
-        if ($status) {
-            $payments = $request->input('payments');
-            if (count($payments) > 0) {
-                foreach ($payments as $key => $value) {
-                    $transaction_id = $value['transaction_id'];
-                    $amount = $value['amount'];
-                    $clientId = $result[0]->id;
-                    $date = $value['date'];
-                    $array = array($transaction_id, $clientId, $amount, $date);
-                    $query = DB::select('call addPayment(?, ?, ?, ?)', $array);
-                }
-            }
-            return response()->json($result, 200);
-        } else {
-            return response()->json($result, 400);
-        }
+        $payments = $request->input('payments');
+        $array = array($client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address'], json_encode($payments));
+        DB::select('call addClient(?, ?, ?, ?, ?, ?, ?)', $array);
     }
 
     public function update(Request $request)
     {
         $client = $request->input('client');
-        $array = array($client['id'], $client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address']);
-        $result = DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?)', $array);
-
-        $paymentsCount = DB::select('call getPaymentCountsOfClient(?)', [$client['id']])[0]->quantity;
-        $incomingPayments = count($request->input('payments'));
         $payments = $request->input('payments');
 
-        if ($paymentsCount < $incomingPayments) {
-            $payments = array_slice($payments, $paymentsCount);
-            foreach ($payments as $key => $value) {
-                $transaction_id = $value['transaction_id'];
-                $amount = $value['amount'];
-                $clientId = $client['id'];
-                $date = $value['date'];
-                $array = array($transaction_id, $clientId, $amount, $date);
-                $query = DB::select('call addPayment(?, ?, ?, ?)', $array);
-            }
-        } else {
-            if (count($payments) > 0) {
-                foreach ($payments as $key => $value) {
-                    $id = $value['id'];
-                    $transaction_id = $value['transaction_id'];
-                    $clientId = $client['id'];
-                    $amount = $value['amount'];
-                    $date = $value['date'];
-                    $array = array($id, $transaction_id, $clientId, $amount, $date);
-                    $query = DB::select('call updatePayment(?, ?, ?, ?, ?)', $array);
-                }
-            }
-        }
-        return response()->json($result, 200);
+        $array = array($client['id'], $client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address'], json_encode($payments));
+
+        return DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?, ?)', $array);
+
+        // $paymentsCount = DB::select('call getPaymentCountsOfClient(?)', [$client['id']])[0]->quantity;
+        // $incomingPayments = count($request->input('payments'));
+        // $payments = $request->input('payments');
+
+        // if ($paymentsCount < $incomingPayments) {
+        //     $payments = array_slice($payments, $paymentsCount);
+        //     foreach ($payments as $key => $value) {
+        //         $transaction_id = $value['transaction_id'];
+        //         $amount = $value['amount'];
+        //         $clientId = $client['id'];
+        //         $date = $value['date'];
+        //         $array = array($transaction_id, $clientId, $amount, $date);
+        //         $query = DB::select('call addPayment(?, ?, ?, ?)', $array);
+        //     }
+        // } else {
+        //     if (count($payments) > 0) {
+        //         foreach ($payments as $key => $value) {
+        //             $id = $value['id'];
+        //             $transaction_id = $value['transaction_id'];
+        //             $clientId = $client['id'];
+        //             $amount = $value['amount'];
+        //             $date = $value['date'];
+        //             $array = array($id, $transaction_id, $clientId, $amount, $date);
+        //             $query = DB::select('call updatePayment(?, ?, ?, ?, ?)', $array);
+        //         }
+        //     }
+        // }
+        // return response()->json($result, 200);
     }
 
     public function delete($id)
