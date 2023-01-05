@@ -34,7 +34,7 @@
             </template>
 
             <template v-slot:item.total="{ item }">
-                <span>$ {{ item.total ?? 0 }} </span>
+                <span>{{ formatCurrency(item.total) }} </span>
             </template>
 
             <template v-slot:top>
@@ -64,7 +64,7 @@
 
                             <v-card-text>
                                 <form-component :title="title" :client="client" :payments="payments"
-                                    :delete-payments="deletePayments" @client-event="showAlert">
+                                    @client-event="showAlert">
                                 </form-component>
                             </v-card-text>
                         </v-card>
@@ -78,24 +78,19 @@
 
                             <v-card-text>
                                 <v-container fluid>
-                                    <v-row>
+                                    <v-row align="center">
                                         <v-col cols="12">
-                                            <v-card>
-                                                <v-card-title>
-                                                    <v-icon color="red">mdi-alert-circle</v-icon>
-                                                    <span class="headline"> Are you sure you want to delete this
-                                                        client? This will be delete all payments</span>
-                                                </v-card-title>
-                                                <v-card-actions>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn color="blue darken-1" text @click="showDeleteForm = false">
-                                                        Cancel
-                                                    </v-btn>
-                                                    <v-btn color="blue darken-1" text @click="deleteClient">
-                                                        OK
-                                                    </v-btn>
-                                                </v-card-actions>
-                                            </v-card>
+                                            <span class="headline"> Are you sure you want to delete this
+                                                client? This will be delete all payments</span>
+                                            <v-spacer></v-spacer>
+                                        </v-col>
+                                        <v-col cols="12">
+                                            <v-btn color="blue darken-1" text @click="showDeleteForm = false">
+                                                Cancel
+                                            </v-btn>
+                                            <v-btn color="blue darken-1" text @click="deleteClient">
+                                                OK
+                                            </v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -126,6 +121,7 @@ export default {
     data() {
         return {
             formatDate: formatDate,
+            formatCurrency: formatCurrency,
             loading: true,
             search: '',
             title: 'Add Client',
@@ -170,8 +166,11 @@ export default {
             this.items = response;
             this.loading = false;
         });
+
+    
     },
     methods: {
+
         getColor(quantity) {
             if (quantity > 3) {
                 return 'green';

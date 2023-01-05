@@ -1,5 +1,6 @@
 const formatCurrency = (value) => {
-    return "$ " + (value / 100).toFixed(2);
+    // return "$ " + (value / 100).toFixed(2);
+    return `$ ${value}`
 }
 
 const formatDate = (date) => {

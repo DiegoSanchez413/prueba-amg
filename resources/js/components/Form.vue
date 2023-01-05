@@ -1,7 +1,5 @@
 <template>
     <v-container data-app>
-
-    
         <h2 class="text-left">Personal Information</h2>
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-container>
@@ -114,6 +112,8 @@
 </template>
 <script>
 import { listClients } from '../api/client.js';
+// import { client } from '../store/store.js';
+
 
 export default {
     props: {
@@ -136,14 +136,10 @@ export default {
                     menu: false
                 }],
         },
-        deletePayments: {
-            type: Array,
-            required: true,
-            default: () => []
-        }
     },
     data() {
         return {
+            deletePayments: [],
             maxDate: '',
             today: new Date().toISOString().substr(0, 10),
             valid: true,
@@ -184,6 +180,7 @@ export default {
     },
     mounted() {
         // this.setMaxDate();
+
     },
     methods: {
         validate() {
@@ -225,20 +222,26 @@ export default {
                 client: this.client,
                 payments: this.payments
             }
-            const { data, status } = await this.$axios.post('/api/addClient', form);
-            if (status === 200 && data.success) {
-                listClients().then((response) => {
-                    this.items = response;
-                });
-                this.showForm = false;
-                this.text = 'Client and Payments registered successfully';
-                this.snackbar = true;
-                this.$refs.form.reset()
-                setTimeout(() => {
-                    this.snackbar = false
-                }, 2000)
-                this.$emit('client-event', 'Client registered successfully');
-            }
+            this.$store.commit('setClient', form)
+            console.log(this.$store.state.client)
+
+            // client.commit('setClient', form)
+            // console.log(client.state.client)
+
+            // const { data, status } = await this.$axios.post('/api/addClient', form);
+            // if (status === 200 && data.success) {
+            //     listClients().then((response) => {
+            //         this.items = response;
+            //     });
+            //     this.showForm = false;
+            //     this.text = 'Client and Payments registered successfully';
+            //     this.snackbar = true;
+            //     this.$refs.form.reset()
+            //     setTimeout(() => {
+            //         this.snackbar = false
+            //     }, 2000)
+            //     this.$emit('client-event', 'Client registered successfully');
+            // }
         },
 
         updateClient: async function () {
