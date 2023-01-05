@@ -25,3 +25,4 @@ Route::put('updateClient', 'App\Http\Controllers\ClientController@update');
 Route::post('addPayment', 'App\Http\Controllers\PaymentController@store');
 Route::get('listClientPayments/{id}', 'App\Http\Controllers\PaymentController@getClientPayments');
 Route::delete('deleteClient/{id}', 'App\Http\Controllers\ClientController@delete');
+Route::delete('deletePayment/{id}', 'App\Http\Controllers\PaymentController@deletePayment');

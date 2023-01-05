@@ -27,5 +27,10 @@ class PaymentController extends Controller
         return response()->json($result, 200);
     }
 
+    public function deletePayment($id){
+        $result = DB::select('call deletePayment(?)', [$id]);
+        return response()->json($result, 200);
+    }
+
     
 }

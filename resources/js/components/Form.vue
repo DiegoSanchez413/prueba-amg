@@ -85,9 +85,8 @@
                                     </v-date-picker>
                                 </v-menu>
                             </v-col>
-                            <v-col cols="12" sm="6" md="4" v-if="index > 0">
-                                <v-btn class="mx-2" @click="removeInput(index)" fab dark color="red"
-                                    v-if="title !== 'Edit Client'">
+                            <v-col cols="12" sm="6" md="4">
+                                <v-btn class="mx-2" @click="removeInput(index)" fab dark color="red">
                                     <v-icon dark>
                                         mdi-minus
                                     </v-icon>
@@ -186,15 +185,6 @@ export default {
                 this.addClient();
             }
         },
-        // setMaxDate() {
-        //     const today = new Date();
-        //     const year = today.getFullYear();
-        //     const month = today.getMonth();
-        //     const day = today.getDate();
-        //     const eighteenYearsAgo = new Date(year - 18, month, day);
-        //     const formmat = eighteenYearsAgo.toISOString().split('T')[0];
-        //     this.maxDate = formmat;
-        // },
 
         addInput: function () {
             if (this.payments.length === 5) {
@@ -210,8 +200,19 @@ export default {
                 });
             }
         },
-        removeInput: function (index) {
-            this.payments.splice(index, 1);
+        removeInput: async function (index) {
+            const request = this.deletePayment(this.payments[index].transaction_id);
+            if (request) {
+                this.payments.splice(index, 1);
+            }
+        },
+        deletePayment: async function (transactionId) {
+            const { status } = await this.$axios.delete(`/api/deletePayment/${transactionId}`);
+            if (status === 200) {
+                this.$emit('client-event', 'Payment deleted successfully');
+                return true;
+            }
+            return false;
         },
         addClient: async function () {
             let form = {

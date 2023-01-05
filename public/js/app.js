@@ -5602,16 +5602,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.addClient();
       }
     },
-    // setMaxDate() {
-    //     const today = new Date();
-    //     const year = today.getFullYear();
-    //     const month = today.getMonth();
-    //     const day = today.getDate();
-    //     const eighteenYearsAgo = new Date(year - 18, month, day);
-    //     const formmat = eighteenYearsAgo.toISOString().split('T')[0];
-    //     this.maxDate = formmat;
-    // },
-
     addInput: function addInput() {
       if (this.payments.length === 5) {
         this.$emit('client-event', 'You can only add 5 payments');
@@ -5625,24 +5615,72 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
     },
-    removeInput: function removeInput(index) {
-      this.payments.splice(index, 1);
-    },
-    addClient: function () {
-      var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var _this = this;
-        var form, _yield$this$$axios$po, data, status;
+    removeInput: function () {
+      var _removeInput = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(index) {
+        var request;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
+            case 0:
+              request = this.deletePayment(this.payments[index].transaction_id);
+              if (request) {
+                this.payments.splice(index, 1);
+              }
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee, this);
+      }));
+      function removeInput(_x) {
+        return _removeInput.apply(this, arguments);
+      }
+      return removeInput;
+    }(),
+    deletePayment: function () {
+      var _deletePayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(transactionId) {
+        var _yield$this$$axios$de, status;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return this.$axios["delete"]("/api/deletePayment/".concat(transactionId));
+            case 2:
+              _yield$this$$axios$de = _context2.sent;
+              status = _yield$this$$axios$de.status;
+              if (!(status === 200)) {
+                _context2.next = 7;
+                break;
+              }
+              this.$emit('client-event', 'Payment deleted successfully');
+              return _context2.abrupt("return", true);
+            case 7:
+              return _context2.abrupt("return", false);
+            case 8:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2, this);
+      }));
+      function deletePayment(_x2) {
+        return _deletePayment.apply(this, arguments);
+      }
+      return deletePayment;
+    }(),
+    addClient: function () {
+      var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _this = this;
+        var form, _yield$this$$axios$po, data, status;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
             case 0:
               form = {
                 client: this.client,
                 payments: this.payments
               };
-              _context.next = 3;
+              _context3.next = 3;
               return this.$axios.post('/api/addClient', form);
             case 3:
-              _yield$this$$axios$po = _context.sent;
+              _yield$this$$axios$po = _context3.sent;
               data = _yield$this$$axios$po.data;
               status = _yield$this$$axios$po.status;
               if (status === 200 && data.success) {
@@ -5660,9 +5698,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }
             case 7:
             case "end":
-              return _context.stop();
+              return _context3.stop();
           }
-        }, _callee, this);
+        }, _callee3, this);
       }));
       function addClient() {
         return _addClient.apply(this, arguments);
@@ -5670,20 +5708,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return addClient;
     }(),
     updateClient: function () {
-      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var _this2 = this;
         var form, _yield$this$$axios$pu, status;
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
             case 0:
               form = {
                 client: this.client,
                 payments: this.payments
               };
-              _context2.next = 3;
+              _context4.next = 3;
               return this.$axios.put('/api/updateClient', form);
             case 3:
-              _yield$this$$axios$pu = _context2.sent;
+              _yield$this$$axios$pu = _context4.sent;
               status = _yield$this$$axios$pu.status;
               if (status === 200) {
                 (0,_api_client_js__WEBPACK_IMPORTED_MODULE_0__.listClients)().then(function (response) {
@@ -5693,9 +5731,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }
             case 6:
             case "end":
-              return _context2.stop();
+              return _context4.stop();
           }
-        }, _callee2, this);
+        }, _callee4, this);
       }));
       function updateClient() {
         return _updateClient.apply(this, arguments);
@@ -6306,13 +6344,13 @@ var render = function render() {
           return _vm.$refs.payment[index].save(payment.date);
         }
       }
-    }, [_vm._v("\n                                        OK\n                                    ")])], 1)], 1)], 1), _vm._v(" "), index > 0 ? _c("v-col", {
+    }, [_vm._v("\n                                        OK\n                                    ")])], 1)], 1)], 1), _vm._v(" "), _c("v-col", {
       attrs: {
         cols: "12",
         sm: "6",
         md: "4"
       }
-    }, [_vm.title !== "Edit Client" ? _c("v-btn", {
+    }, [_c("v-btn", {
       staticClass: "mx-2",
       attrs: {
         fab: "",
@@ -6328,7 +6366,7 @@ var render = function render() {
       attrs: {
         dark: ""
       }
-    }, [_vm._v("\n                                    mdi-minus\n                                ")])], 1) : _vm._e()], 1) : _vm._e()], 1)], 1);
+    }, [_vm._v("\n                                    mdi-minus\n                                ")])], 1)], 1)], 1)], 1);
   }), _vm._v(" "), _c("v-col", {
     attrs: {
       cols: "12",
