@@ -5532,8 +5532,6 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-// import { client } from '../store/store.js';
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     title: {
@@ -5601,9 +5599,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]
     };
   },
-  mounted: function mounted() {
-    // this.setMaxDate();
-  },
+  // mounted() {
+  //     console.log(this.$store.state.client.client)
+  //     console.log(this.$store.state.client.payments)
+  // },
   methods: {
     validate: function validate() {
       var clientValid = this.$refs.form.validate();
@@ -5631,7 +5630,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               this.deletePayments.push(this.payments[index]);
               this.payments.splice(index, 1);
-              // detect if modal was closed
             case 2:
             case "end":
               return _context.stop();
@@ -5673,76 +5671,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       return deletePayment;
     }(),
-    addClient: function () {
-      var _addClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var form;
+    addClient: function addClient() {
+      var _this = this;
+      var form = {
+        client: this.client,
+        payments: this.payments
+      };
+      this.$store.commit('setClient', form);
+      console.log(this.$store.state.client.client);
+      console.log(this.$store.state.client.payments);
+      // const { data, status } = await this.$axios.post('/api/addClient', form);
+      // if (status === 200 && data.success) {
+      (0,_api_client_js__WEBPACK_IMPORTED_MODULE_0__.listClients)().then(function (response) {
+        _this.items = response;
+      });
+      this.showForm = false;
+      this.text = 'Client and Payments registered successfully';
+      this.snackbar = true;
+      this.$refs.form.reset();
+      setTimeout(function () {
+        _this.snackbar = false;
+      }, 2000);
+      this.$emit('client-event', 'Client registered successfully');
+      // }
+    },
+
+    updateClient: function () {
+      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _this2 = this;
+        var form, _yield$this$$axios$pu, status;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              form = {
-                client: this.client,
-                payments: this.payments
-              };
-              this.$store.commit('setClient', form);
-              console.log(this.$store.state.client);
-
-              // client.commit('setClient', form)
-              // console.log(client.state.client)
-
-              // const { data, status } = await this.$axios.post('/api/addClient', form);
-              // if (status === 200 && data.success) {
-              //     listClients().then((response) => {
-              //         this.items = response;
-              //     });
-              //     this.showForm = false;
-              //     this.text = 'Client and Payments registered successfully';
-              //     this.snackbar = true;
-              //     this.$refs.form.reset()
-              //     setTimeout(() => {
-              //         this.snackbar = false
-              //     }, 2000)
-              //     this.$emit('client-event', 'Client registered successfully');
-              // }
-            case 3:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3, this);
-      }));
-      function addClient() {
-        return _addClient.apply(this, arguments);
-      }
-      return addClient;
-    }(),
-    updateClient: function () {
-      var _updateClient = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var _this = this;
-        var form, _yield$this$$axios$pu, status;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
             case 0:
               form = {
                 client: this.client,
                 payments: this.payments,
                 deletePayments: this.deletePayments
               };
-              _context4.next = 3;
+              _context3.next = 3;
               return this.$axios.put('/api/updateClient', form);
             case 3:
-              _yield$this$$axios$pu = _context4.sent;
+              _yield$this$$axios$pu = _context3.sent;
               status = _yield$this$$axios$pu.status;
               if (status === 200) {
                 (0,_api_client_js__WEBPACK_IMPORTED_MODULE_0__.listClients)().then(function (response) {
-                  _this.items = response;
+                  _this2.items = response;
                 });
                 this.$emit('client-event', 'Client updated successfully');
               }
               this.deletePayments = [];
             case 7:
             case "end":
-              return _context4.stop();
+              return _context3.stop();
           }
-        }, _callee4, this);
+        }, _callee3, this);
       }));
       function updateClient() {
         return _updateClient.apply(this, arguments);
@@ -5784,7 +5766,8 @@ var render = function render() {
         return [_c("v-btn", _vm._b({
           attrs: {
             color: "success",
-            text: ""
+            text: "",
+            "x-small": ""
           },
           on: {
             click: function click($event) {
@@ -5846,7 +5829,8 @@ var render = function render() {
         return [_c("v-chip", {
           attrs: {
             color: _vm.getColor(item.quantity),
-            dark: ""
+            dark: "",
+            small: ""
           }
         }, [_vm._v("\n                " + _vm._s((_item$quantity = item.quantity) !== null && _item$quantity !== void 0 ? _item$quantity : 0) + "\n            ")])];
       }
@@ -6231,7 +6215,8 @@ var render = function render() {
     attrs: {
       fab: "",
       dark: "",
-      color: "primary"
+      color: "success",
+      "x-small": ""
     },
     on: {
       click: function click($event) {
@@ -6388,7 +6373,8 @@ var render = function render() {
       attrs: {
         fab: "",
         dark: "",
-        color: "red"
+        color: "info",
+        "x-small": ""
       },
       on: {
         click: function click($event) {
@@ -6591,38 +6577,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
-var client = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
+
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
+var client = {
   state: {
     client: {
-      client: {
-        name: "",
-        lastname: "",
-        dob: "",
-        phone: "",
-        email: "",
-        address: ""
-      },
-      payments: [{
-        transaction_id: '',
-        amount: '',
-        date: '',
-        menu: false
-      }]
-    }
+      name: "",
+      lastname: "",
+      dob: "",
+      phone: "",
+      email: "",
+      address: ""
+    },
+    payments: [{
+      transaction_id: '',
+      amount: '',
+      date: '',
+      menu: false
+    }]
   },
   mutations: {
     setClient: function setClient(state, data) {
-      state.client = data;
-      state.client.payments = data.payments;
+      state.client = data.client;
+      state.payments = data.payments;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/addClient', data).then(function (response) {
+        console.log(response);
+        // if (response.success) {
+        //     state.client = data.client
+        //     state.client.payments = data.payments
+        // }
+      });
     }
   }
+};
+
+var store = new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
+  modules: {
+    client: client
+  }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (client);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
 /***/ }),
 

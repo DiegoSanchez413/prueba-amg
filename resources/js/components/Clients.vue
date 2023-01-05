@@ -3,7 +3,7 @@
         <v-snackbar v-model="snackbar" :vertical="vertical">
             {{ text }}
             <template v-slot:action="{ attrs }">
-                <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
+                <v-btn color="success" text v-bind="attrs" @click="snackbar = false" x-small>
                     Close
                 </v-btn>
             </template>
@@ -28,7 +28,7 @@
             </template>
 
             <template v-slot:item.quantity="{ item }">
-                <v-chip :color="getColor(item.quantity)" dark>
+                <v-chip :color="getColor(item.quantity)" dark small>
                     {{ item.quantity ?? 0 }}
                 </v-chip>
             </template>
@@ -167,7 +167,7 @@ export default {
             this.loading = false;
         });
 
-    
+
     },
     methods: {
 

@@ -47,7 +47,7 @@
                     </v-col>
 
                     <v-col cols="6" sm="6" md="6">
-                        <v-btn class="mx-2" @click="addInput()" fab dark color="primary">
+                        <v-btn class="mx-2" @click="addInput()" fab dark color="success" x-small>
                             <v-icon dark>
                                 mdi-plus
                             </v-icon>
@@ -86,7 +86,7 @@
                                 </v-menu>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                                <v-btn class="mx-2" @click="removeInput(index)" fab dark color="red">
+                                <v-btn class="mx-2" @click="removeInput(index)" fab dark color="info" x-small>
                                     <v-icon dark>
                                         mdi-minus
                                     </v-icon>
@@ -112,8 +112,6 @@
 </template>
 <script>
 import { listClients } from '../api/client.js';
-// import { client } from '../store/store.js';
-
 
 export default {
     props: {
@@ -178,10 +176,10 @@ export default {
             ],
         }
     },
-    mounted() {
-        // this.setMaxDate();
-
-    },
+    // mounted() {
+    //     console.log(this.$store.state.client.client)
+    //     console.log(this.$store.state.client.payments)
+    // },
     methods: {
         validate() {
             const clientValid = this.$refs.form.validate()
@@ -207,7 +205,6 @@ export default {
         removeInput: async function (index) {
             this.deletePayments.push(this.payments[index]);
             this.payments.splice(index, 1);
-            // detect if modal was closed
         },
         deletePayment: async function (transactionId) {
             const { status } = await this.$axios.delete(`/api/deletePayment/${transactionId}`);
@@ -217,30 +214,27 @@ export default {
             }
             return false;
         },
-        addClient: async function () {
+        addClient: function () {
             let form = {
                 client: this.client,
                 payments: this.payments
             }
             this.$store.commit('setClient', form)
-            console.log(this.$store.state.client)
-
-            // client.commit('setClient', form)
-            // console.log(client.state.client)
-
+            console.log(this.$store.state.client.client)
+            console.log(this.$store.state.client.payments)
             // const { data, status } = await this.$axios.post('/api/addClient', form);
             // if (status === 200 && data.success) {
-            //     listClients().then((response) => {
-            //         this.items = response;
-            //     });
-            //     this.showForm = false;
-            //     this.text = 'Client and Payments registered successfully';
-            //     this.snackbar = true;
-            //     this.$refs.form.reset()
-            //     setTimeout(() => {
-            //         this.snackbar = false
-            //     }, 2000)
-            //     this.$emit('client-event', 'Client registered successfully');
+            listClients().then((response) => {
+                this.items = response;
+            });
+            this.showForm = false;
+            this.text = 'Client and Payments registered successfully';
+            this.snackbar = true;
+            this.$refs.form.reset()
+            setTimeout(() => {
+                this.snackbar = false
+            }, 2000)
+            this.$emit('client-event', 'Client registered successfully');
             // }
         },
 
@@ -256,7 +250,6 @@ export default {
                     this.items = response;
                 });
                 this.$emit('client-event', 'Client updated successfully');
-
             }
             this.deletePayments = [];
         },

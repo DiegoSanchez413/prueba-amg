@@ -1,36 +1,49 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 
-const client = new Vuex.Store({
+const client = {
     state: {
         client: {
-            client: {
-                name: "",
-                lastname: "",
-                dob: "",
-                phone: "",
-                email: "",
-                address: "",
-            },
-            payments: [
-                {
-                    transaction_id: '',
-                    amount: '',
-                    date: '',
-                    menu: false
-                }
-            ]
-        }
+            name: "",
+            lastname: "",
+            dob: "",
+            phone: "",
+            email: "",
+            address: "",
+        },
+        payments: [
+            {
+                transaction_id: '',
+                amount: '',
+                date: '',
+                menu: false
+            }
+        ]
     },
     mutations: {
         setClient(state, data) {
-            state.client = data
-            state.client.payments = data.payments
+            state.client = data.client
+            state.payments = data.payments
+
+            axios.post('/api/addClient', data).then(response => {
+                console.log(response)
+                // if (response.success) {
+                //     state.client = data.client
+                //     state.client.payments = data.payments
+                // }
+            })
         }
+    }
+}
+
+const store = new Vuex.Store({
+    modules: {
+        client
     }
 })
 
-export default client 
+export default store 

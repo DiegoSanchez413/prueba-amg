@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import 'es6-promise/auto'
 
-import client  from './store/store.js';
+import store  from './store/store.js';
 
 
 
@@ -23,5 +23,5 @@ Vue.prototype.$axios = axios
 const app = new Vue({
     el: '#app',
     vuetify: new Vuetify(),
-    store: client, 
+    store: store, 
 });
