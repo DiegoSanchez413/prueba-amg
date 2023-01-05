@@ -1,5 +1,7 @@
 <template>
     <v-container data-app>
+
+    
         <h2 class="text-left">Personal Information</h2>
         <v-form ref="form" v-model="valid" lazy-validation>
             <v-container>
@@ -133,6 +135,11 @@ export default {
                     date: '',
                     menu: false
                 }],
+        },
+        deletePayments: {
+            type: Array,
+            required: true,
+            default: () => []
         }
     },
     data() {
@@ -193,18 +200,17 @@ export default {
 
             if (this.payments.length < 5) {
                 this.payments.push({
-                    transaction_id: "",
-                    amount: "",
-                    date: "",
+                    transaction_id: Math.floor(Math.random() * 1000000000),
+                    amount: Math.floor(Math.random() * 1000),
+                    date: "2023-01-01",
                     menu: false,
                 });
             }
         },
         removeInput: async function (index) {
-            const request = this.deletePayment(this.payments[index].transaction_id);
-            if (request) {
-                this.payments.splice(index, 1);
-            }
+            this.deletePayments.push(this.payments[index]);
+            this.payments.splice(index, 1);
+            // detect if modal was closed
         },
         deletePayment: async function (transactionId) {
             const { status } = await this.$axios.delete(`/api/deletePayment/${transactionId}`);
@@ -234,10 +240,12 @@ export default {
                 this.$emit('client-event', 'Client registered successfully');
             }
         },
+
         updateClient: async function () {
             let form = {
                 client: this.client,
-                payments: this.payments
+                payments: this.payments,
+                deletePayments: this.deletePayments
             }
             const { status } = await this.$axios.put('/api/updateClient', form);
             if (status === 200) {
@@ -245,7 +253,9 @@ export default {
                     this.items = response;
                 });
                 this.$emit('client-event', 'Client updated successfully');
+
             }
+            this.deletePayments = [];
         },
     },
 }

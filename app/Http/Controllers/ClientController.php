@@ -26,39 +26,9 @@ class ClientController extends Controller
     {
         $client = $request->input('client');
         $payments = $request->input('payments');
-
-        $array = array($client['id'], $client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address'], json_encode($payments));
-
-        return DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?, ?)', $array);
-
-        // $paymentsCount = DB::select('call getPaymentCountsOfClient(?)', [$client['id']])[0]->quantity;
-        // $incomingPayments = count($request->input('payments'));
-        // $payments = $request->input('payments');
-
-        // if ($paymentsCount < $incomingPayments) {
-        //     $payments = array_slice($payments, $paymentsCount);
-        //     foreach ($payments as $key => $value) {
-        //         $transaction_id = $value['transaction_id'];
-        //         $amount = $value['amount'];
-        //         $clientId = $client['id'];
-        //         $date = $value['date'];
-        //         $array = array($transaction_id, $clientId, $amount, $date);
-        //         $query = DB::select('call addPayment(?, ?, ?, ?)', $array);
-        //     }
-        // } else {
-        //     if (count($payments) > 0) {
-        //         foreach ($payments as $key => $value) {
-        //             $id = $value['id'];
-        //             $transaction_id = $value['transaction_id'];
-        //             $clientId = $client['id'];
-        //             $amount = $value['amount'];
-        //             $date = $value['date'];
-        //             $array = array($id, $transaction_id, $clientId, $amount, $date);
-        //             $query = DB::select('call updatePayment(?, ?, ?, ?, ?)', $array);
-        //         }
-        //     }
-        // }
-        // return response()->json($result, 200);
+        $deletePayments = $request->input('deletePayments');
+        $array = array($client['id'], $client['name'], $client['lastname'], $client['dob'], $client['phone'], $client['email'], $client['address'], json_encode($payments), json_encode($deletePayments));
+        return DB::select('call updateClient(?, ?, ?, ?, ?, ?, ?, ?, ?)', $array);
     }
 
     public function delete($id)

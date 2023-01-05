@@ -1,114 +1,121 @@
 <template>
-    <div data-app>
-        <v-app>
-            <v-snackbar v-model="snackbar" :vertical="vertical">
-                {{ text }}
-                <template v-slot:action="{ attrs }">
-                    <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
-                        Close
-                    </v-btn>
-                </template>
-            </v-snackbar>
+    <v-app data-app>
+        <v-snackbar v-model="snackbar" :vertical="vertical">
+            {{ text }}
+            <template v-slot:action="{ attrs }">
+                <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
 
-            <v-card-title>
-                Search Clients
-                <v-spacer></v-spacer>
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
-                    hide-details></v-text-field>
-            </v-card-title>
-
-
-            <v-data-table :headers="headers" :search="search" :items="items" :items-per-page="10" class="elevation-1"
-                :loading="loading" loading-text="Loading clients... Please wait">
-                <template v-slot:item.name="{ item }">
-                    <span>{{ item.name }} {{ item.lastname }}</span>
-                </template>
-
-                <template v-slot:item.quantity="{ item }">
-                    <v-chip :color="getColor(item.quantity)" dark>
-                        $ {{ item.quantity ?? 0 }}
-                    </v-chip>
-                </template>
+        <v-card-title>
+            Search Clients
+            <v-spacer></v-spacer>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details readonly>
+            </v-text-field>
+        </v-card-title>
 
 
-                <template v-slot:item.total="{ item }">
-                    <span>$ {{ item.total ?? 0 }} </span>
-                </template>
+        <v-data-table :headers="headers" :search="search" :items="items" :items-per-page="10" class="elevation-1"
+            :loading="loading" loading-text="Loading clients... Please wait">
+            <template v-slot:item.name="{ item }">
+                <span>{{ item.name }} {{ item.lastname }}</span>
+            </template>
 
-                <template v-slot:top>
-                    <v-toolbar flat>
-                        <v-toolbar-title>Clients</v-toolbar-title>
-                        <v-divider class="mx-4" inset vertical></v-divider>
-                        <v-spacer></v-spacer>
+            <template v-slot:item.dob="{ item }">
+                <span>{{ formatDate(item.dob) }}</span>
+            </template>
 
-                        <v-dialog v-model="showForm">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn color="success" dark v-bind="attrs" v-on="on" @click="showAddDialog">
-                                    ADD CLIENT
-                                </v-btn>
-                            </template>
+            <template v-slot:item.quantity="{ item }">
+                <v-chip :color="getColor(item.quantity)" dark>
+                    {{ item.quantity ?? 0 }}
+                </v-chip>
+            </template>
 
-                            <v-card>
-                                <v-card-title class="text-h5 grey lighten-2">
-                                    {{ title }}
-                                </v-card-title>
+            <template v-slot:item.total="{ item }">
+                <span>$ {{ item.total ?? 0 }} </span>
+            </template>
 
-                                <v-card-text>
-                                    <form-component :title="title" :client="client" :payments="payments"
-                                        @client-event="showAlert">
-                                    </form-component>
-                                </v-card-text>
-                            </v-card>
-                        </v-dialog>
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>Clients</v-toolbar-title>
+                    <v-divider class="mx-4" inset vertical></v-divider>
+                    <v-spacer></v-spacer>
 
-                        <v-dialog v-model="showDeleteForm">
-                            <v-card>
-                                <v-card-title class="text-h5 grey lighten-2">
-                                    DELETE CLIENT
-                                </v-card-title>
+                    <v-dialog v-model="showForm" persistent>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn color="success" dark v-bind="attrs" v-on="on" @click="showAddDialog">
+                                ADD CLIENT
+                            </v-btn>
+                        </template>
 
-                                <v-card-text>
-                                    <v-container fluid>
-                                        <v-row>
-                                            <v-col cols="12">
-                                                <v-card>
-                                                    <v-card-title>
-                                                        <v-icon class="mr-2" color="red">mdi-alert-circle</v-icon>
-                                                        <span class="headline"> Are you sure you want to delete this
-                                                            client? This will be delete all payments</span>
-                                                    </v-card-title>
-                                                    <v-card-actions>
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn color="blue darken-1" text
-                                                            @click="showDeleteForm = false">
-                                                            Cancel
-                                                        </v-btn>
-                                                        <v-btn color="blue darken-1" text @click="deleteClient">
-                                                            OK
-                                                        </v-btn>
-                                                    </v-card-actions>
-                                                </v-card>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                            </v-card>
-                        </v-dialog>
+                        <v-card>
+                            <v-card-title class="text-h5 grey lighten-2">
+                                <v-row>
+                                    <v-col cols="11">
+                                        <span>{{ title }}</span>
+                                    </v-col>
+                                    <v-col cols="1">
+                                        <v-icon @click="closeDialog">mdi-close</v-icon>
+                                    </v-col>
+                                </v-row>
+                            </v-card-title>
 
-                    </v-toolbar>
-                </template>
+                            <v-card-text>
+                                <form-component :title="title" :client="client" :payments="payments"
+                                    :delete-payments="deletePayments" @client-event="showAlert">
+                                </form-component>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
 
-                <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-2" @click="showEditDialog(item)">
-                        mdi-pencil
-                    </v-icon>
-                    <v-icon small @click="showDeleteDialog(item)">
-                        mdi-delete
-                    </v-icon>
-                </template>
-            </v-data-table>
-        </v-app>
-    </div>
+                    <v-dialog v-model="showDeleteForm">
+                        <v-card>
+                            <v-card-title class="text-h5 grey lighten-2">
+                                DELETE CLIENT
+                            </v-card-title>
+
+                            <v-card-text>
+                                <v-container fluid>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <v-card>
+                                                <v-card-title>
+                                                    <v-icon color="red">mdi-alert-circle</v-icon>
+                                                    <span class="headline"> Are you sure you want to delete this
+                                                        client? This will be delete all payments</span>
+                                                </v-card-title>
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn color="blue darken-1" text @click="showDeleteForm = false">
+                                                        Cancel
+                                                    </v-btn>
+                                                    <v-btn color="blue darken-1" text @click="deleteClient">
+                                                        OK
+                                                    </v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+                        </v-card>
+                    </v-dialog>
+
+                </v-toolbar>
+            </template>
+
+            <template v-slot:item.actions="{ item }">
+                <v-icon small class="mr-2" @click="showEditDialog(item)">
+                    mdi-pencil
+                </v-icon>
+                <v-icon small @click="showDeleteDialog(item)">
+                    mdi-delete
+                </v-icon>
+            </template>
+        </v-data-table>
+    </v-app>
 </template>
 <script>
 import Form from './Form.vue';
@@ -118,11 +125,10 @@ import { listClients } from '../api/client.js';
 export default {
     data() {
         return {
+            formatDate: formatDate,
             loading: true,
             search: '',
             title: 'Add Client',
-            formatCurrency: formatCurrency,
-            formatDate: formatDate,
             vertical: false,
             items: [],
             snackbar: false,
@@ -134,29 +140,30 @@ export default {
                 date: '',
                 menu: false
             }],
+            deletePayments: [],
             menu: false,
             menuPayment: false,
             showDeleteForm: false,
             showForm: false,
             headers: [
-                {
-                    text: 'Client Name',
-                    align: 'start',
-                    sortable: false,
-                    value: 'name',
-                },
-                { text: 'DOB', value: 'dob', formatter: this.formatDate },
+                { text: 'Client Name', value: 'name' },
+                { text: 'DOB', value: 'dob' },
                 { text: 'Phone', value: 'phone' },
                 { text: 'Email', value: 'email' },
                 { text: 'Address', value: 'address' },
                 { text: 'Payments', value: 'quantity' },
-                { text: 'Total', value: 'total', formatter: this.formatCurrency },
+                { text: 'Total', value: 'total' },
                 { text: 'Actions', value: 'actions', sortable: false }
             ],
         }
     },
     components: {
         'form-component': Form
+    },
+    computed: {
+        // formattedDate(date) {
+        //     return formatDate(date);
+        // },
     },
     mounted() {
         listClients().then((response) => {
@@ -173,6 +180,10 @@ export default {
             } else {
                 return 'red';
             }
+        },
+        closeDialog() {
+            this.showForm = false;
+            this.deletePayments = [];
         },
         showAddDialog() {
             this.showForm = true;
